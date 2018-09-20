@@ -1,7 +1,41 @@
 const { Router } = require('express');
 
-const userMiddleware = require('../Middleware');
+const middleWares = require('../Middleware');
 const router = Router();
+
+/** USERS **/
+//Get all users
+router.get('/', middleWares.getAllUsers);
+//Get a single user
+//router.get('/', middleWares.getUser);
+//Change userData
+//router.put('/', middleWares.changeUserData);
+//router.put('/', middleWares.deleteUser);
+
+/** ADMIN **/
+//router.put('/', middleWares.checkAnsewers);
+//router.put('/', middleWares.editQuestion);
+//router.put('/', middleWares.addQuestion);
+//router.put('/', middleWares.deleteQuestion);
+
+/** FRIENDS **/
+//router.get('/', middleWares.getFriends);
+//router.get('/', middleWares.addFriend);
+
+/** REGISTER **/
+//router.post('/', middleWares.register);
+
+/** LOGIN **/
+//router.get('/', middleWares.login);
+
+/** SEND Question **/
+//router.get('/', middleWares.sendQuestion);
+
+/** Panel de administrador **/
+//Aprove Question
+
+/** IN GAME **/
+//router.get('/', middleWares.startGame);
 
 router.get('/game/:gameId', (req, res) => {
   const questions = [
@@ -42,40 +76,7 @@ router.post('/game/:gameId', (req, res) => {
   res.send(json);
 });
 
-/** Configuración del usuario **/
-//Change user data
-//Admin is supposed to use same route
-router.put('/:userId', (req, res) => {
-  const user = {
-    id: req.params.userId,
-    name: 'nombre${req.params.userId}',
-    email: 'correo${req.params.userId}',
-  };
-  res.send(user);
-});
 
-//Get all users
-router.get('/', userMiddleware.addDate, (req, res) => {
-  const users = {
-    id: 0,
-    name: 'Initial Name',
-    email: 'mail',
-    username: 'username',
-    password: 'passw',
-  };
-
-  const json = {
-    response: 'ok',
-    data: users,
-    data2: req.body,
-    total: 1,
-  };
-
-  res.send(json);
-});
-
-/** Panel de administrador **/
-//Aprove Question
 router.put('/admin/check', (req, res) => {
   const user = {
       id: 1,
