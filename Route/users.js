@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const middleWares = require('../Middleware');
+const middleWares = require('../middleware');
 const router = Router();
 
 /** USERS **/
