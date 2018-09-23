@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const router = Router();
-const dateMidd = require('../middlewares');
 
 router.get('/', (req, res) => {
   const users = [
