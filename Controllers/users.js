@@ -1,4 +1,4 @@
-/*class UserController {
+/* class UserController {
   getAll(req, res) {
     const users = [
       {
@@ -25,4 +25,4 @@
   }
 }
 
-module.exports = new UsersController();*/
+module.exports = new UsersController(); */
