@@ -8975,3 +8975,4 @@ node_modules/body-parser/node_modules/qs/test/index.js
 node_modules/body-parser/node_modules/qs/test/parse.js
 node_modules/body-parser/node_modules/qs/test/stringify.js
 node_modules/body-parser/node_modules/qs/test/utils.js
+node_modules/object.assign
