@@ -1,52 +1,22 @@
-//users
-exports.getAllUsers = (req, res, next) => {
-  const users = {
-    id: 0,
-    name: 'Initial Name',
-    email: 'mail',
-    username: 'username',
-    password: 'password',
-  };
+exports.addDate = (req, res, next) => {
+  req.body.date = Date.now();
+  next();
+};
 
-  const json = {
-    response: 'ok',
-    data: users,
-    total: 1,
-  };
-
-  res.send(json);
+exports.checkEmail = (req, res, next) => {
+  const valid = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  if(valid.test(req.body.email)) {
+    res.send('invalid mail');
+  } else {
+    res.send('valid mail');
+  }
 }
 
-exports.getUser = (req, res, next) => {
-  const user = {
-    id: 0,
-    name: 'Initial Name',
-    email: 'mail',
-    username: 'username',
-    password: 'password',
-  };
-
-  const json = {
-    response: 'ok',
-    data: user,
-  };
-
-  res.send(json);
-}
-
-exports.changeUserData = (req, res, next) => {
-  const user = {
-    id: 0,
-    name: 'Initial Name',
-    email: 'mail',
-    username: 'username',
-    password: 'password',
-  };
-
-  const json = {
-    response: 'ok',
-    data: user,
-  };
-
-  res.send(json);
+exports.emptyData = (req, res, next) => {
+  if(req.body.username === '' || req.body.name === ''
+      ||req.body.password === '') {
+    res.send('invalid data');
+  } else {
+    res.send('valid data')
+  }
 }
