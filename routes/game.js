@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const router = Router();
+const gameMiddleware = require('../middlewares');
 
 router.get('/', (req, res) => {
   res.send('playing');
@@ -13,6 +14,7 @@ router.post('/', (req, res) => {
         playPressed: 0
     },
   };
+  res.send(json);
 });
 
 //respuesta
@@ -24,10 +26,11 @@ router.post('/', (req, res) => {
         answer_id: 0
     },
   };
+  res.send(json);
 });
 
 //Play with others
-router.post('/', /*game.checkIntegrity*/(req, res) => {
+router.post('/', gameMiddleware.emptyAddData, (req, res) => {
   const json = {
     response: 'Ok',
     data: {

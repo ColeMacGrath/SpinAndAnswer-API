@@ -51,6 +51,7 @@ router.post('/', /*userMiddleware.checkIntegrity*/(req, res) => {
       name: req.body.name
     },
   }
+  res.send(json);
 });
 
 router.put('/:user_id', (req, res) => {

@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const router = Router();
-
 router.get('/', (req, res) => {
   const questions = [
     {
@@ -30,7 +29,7 @@ router.get('/:question_id', (req, res) => {
     res.send(json);
 });
 
-router.post('/', /*questionMiddleWare.checkIntegrity*/(req, res) => {
+router.post('/', (req, res) => {
   console.log(req.body);
   const json = {
     response: 'Ok',
@@ -40,6 +39,7 @@ router.post('/', /*questionMiddleWare.checkIntegrity*/(req, res) => {
       answers: {}
     },
   }
+  res.send(json);
 });
 
 router.put('/:question_id', (req, res) => {
