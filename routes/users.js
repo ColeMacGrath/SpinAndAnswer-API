@@ -20,16 +20,18 @@ router.get('/:user_id', (req, res) => {
     res.send(json);
 });
 
-router.post('/', /* userMiddleware.checkIntegrity */(req, res) => {
-    console.log(req.body);
+router.post('/', (req, res) => {
     const json = {
         response: 'Ok',
         data: {
-            user_id: 100,
-            // valid: req.body,
+            user_id: 0,
+            username: req.body.username,
             name: req.body.name,
+            mail: req.body.mail,
+            password: req.body.password,
         },
     };
+    console.log(json);
     res.send(json);
 });
 
@@ -42,7 +44,6 @@ router.delete('/user_id', (req, res) => {
 });
 
 // FRIENDS
-
 router.get('/friends', (req, res) => {
     const users = [
         {
