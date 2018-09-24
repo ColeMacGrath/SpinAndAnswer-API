@@ -8976,3 +8976,15 @@ node_modules/body-parser/node_modules/qs/test/parse.js
 node_modules/body-parser/node_modules/qs/test/stringify.js
 node_modules/body-parser/node_modules/qs/test/utils.js
 node_modules/object.assign
+.env
+node_modules/dotenv/appveyor.yml
+node_modules/dotenv/CHANGELOG.md
+node_modules/dotenv/config.js
+node_modules/dotenv/LICENSE
+node_modules/dotenv/README.md
+node_modules/dotenv/lib/cli-options.js
+node_modules/dotenv/lib/main.js
+node_modules/dotenv/tests/test-cli-options.js
+node_modules/dotenv/tests/test-config-cli.js
+node_modules/dotenv/tests/test-config.js
+node_modules/dotenv/tests/test-parse.js

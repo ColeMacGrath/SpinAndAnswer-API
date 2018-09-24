@@ -1,27 +1,43 @@
 const mysql = require('mysql');
 
-class DB {
+class Database {
     constructor() {
-        this.con = mysql.createConnection({
+        this.connection = mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASS,
             database: process.env.DB_NAME,
+            socketPath: process.env.SOCKET_PATH,
         });
 
-        this.con.connect();
+        this.connection.connect();
     }
 
-    queryGet(table) {
-        return this.con.query(`SELECT * FROM ${table}`, (err, rows) => {
+    getAll(table) {
+        // escapado: var sql = 'SELECT * FROM users WHERE id = ' + connection.escape(userId)
+        // query: connection.query('SELECT * FROM users WHERE id = ?'
+        // + [userId], function (error, results, fields))
+        this.connection.query(`SELECT * FROM ${table}`, (err, result) => {
+            // this.result = this.processResult(table, result);
+            if (err) throw err; // Not necesary
+            this.result = result; // Not necesary
+            return result;
+        });
+        // return this.result;
+    }
+
+    query() {
+        this.connection.query('SELECT * FROM users', (err, result /* , fields */) => {
             if (err) throw err;
-            return this.processResults(rows);
+            console.log(result);
         });
     }
 
-    processResults() {
-        return this.result;
-    }
+    /* processResult(table, result) {
+        this.result.forEach((result) => {
+            new [table](result);
+        });
+    } */
 }
 
-exports.db = new DB();
+module.exports = new Database();
