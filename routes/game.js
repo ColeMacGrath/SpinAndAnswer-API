@@ -4,15 +4,15 @@ const router = Router();
 const gameMiddleware = require('../middlewares');
 
 router.get('/', (req, res) => {
-    res.send('playing');
+    res.send('preguntas');
 });
 
-// Inicio de juego
-router.post('/', (req, res) => {
+// categoria
+router.get('/', (req, res) => {
     const json = {
         response: 'ok',
         data: {
-            playPressed: 0,
+            category: 0,
         },
     };
     res.send(json);
@@ -23,20 +23,7 @@ router.post('/', (req, res) => {
     const json = {
         response: 'ok',
         data: {
-            question_id: 0,
-            answer_id: 0,
-        },
-    };
-    res.send(json);
-});
-
-// Play with others
-router.post('/', gameMiddleware.emptyAddData, (req, res) => {
-    const json = {
-        response: 'Ok',
-        data: {
-            friend_id: 0,
-            friend_username: 'username',
+            answer: req.body.answer,
         },
     };
     res.send(json);
