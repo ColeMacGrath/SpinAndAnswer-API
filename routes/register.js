@@ -8,15 +8,15 @@ router.get('/', (req, res) => {
 });
 
 // register
-router.post('/', [registerMiddleWare.checkEmail,
-    registerMiddleWare.emptyUserData], (req, res) => {
+router.post('/', /* [registerMiddleWare.checkEmail,
+    registerMiddleWare.emptyUserData], */ (req, res) => {
     const json = {
         response: 'ok',
         data: {
-            userName: 'userName',
-            password: 'password',
-            name: 'name',
-            emai: 'email',
+            username: req.body.username,
+            password: req.body.password,
+            name: req.body.name,
+            email: req.body.email,
         },
     };
     res.send(json);
