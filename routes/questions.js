@@ -18,26 +18,23 @@ router.get('/', (req, res) => {
     res.send(json);
 });
 
-router.get('/:question_id', (req, res) => {
+router.get('/', (req, res) => {
     const json = {
         response: 'ok',
         data: {
-            question_id: req.params.question_id,
-            question: `Question${req.params.question_id}`,
-            answers: {},
+            question_id: 0,
+            question: 'Question Hola Mundo',
+            answers: [{}],
         },
     };
     res.send(json);
 });
 
 router.post('/', (req, res) => {
-    console.log(req.body);
     const json = {
         response: 'ok',
         data: {
-            question_id: 100,
-            question: 'Question',
-            answers: {},
+            oponent: req.body.answer,
         },
     };
     res.send(json);
