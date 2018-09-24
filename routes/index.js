@@ -6,6 +6,7 @@ const questionRouter = require('./questions');
 const loginRouter = require('./login');
 const gameRouter = require('./game');
 const registerRouter = require('./register');
+const menuRouter = require('./menu');
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use('/questions', questionRouter);
 router.use('/login', loginRouter);
 router.use('/game', gameRouter);
 router.use('/register', registerRouter);
+router.use('/menu', menuRouter);
 
 module.exports = router;
