@@ -14,30 +14,19 @@ class Database {
     }
 
     getAll(table) {
-        // escapado: var sql = 'SELECT * FROM users WHERE id = ' + connection.escape(userId)
-        // query: connection.query('SELECT * FROM users WHERE id = ?'
-        // + [userId], function (error, results, fields))
         this.connection.query(`SELECT * FROM ${table}`, (err, result) => {
-            // this.result = this.processResult(table, result);
-            if (err) throw err; // Not necesary
-            this.result = result; // Not necesary
+            if (err) throw err;
+            this.result = result;
             return result;
         });
-        // return this.result;
     }
 
     query() {
-        this.connection.query('SELECT * FROM users', (err, result /* , fields */) => {
+        this.connection.query('SELECT * FROM users', (err, result) => {
             if (err) throw err;
             console.log(result);
         });
     }
-
-    /* processResult(table, result) {
-        this.result.forEach((result) => {
-            new [table](result);
-        });
-    } */
 }
 
 module.exports = new Database();

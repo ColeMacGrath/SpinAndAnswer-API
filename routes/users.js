@@ -78,7 +78,7 @@ router.get('/friends/:friend_id', (req, res) => {
     res.send(json);
 });
 
-router.post('/friends/', /* friendsMiddleWare.checkIntegrity */ (req, res) => {
+router.post('/friends/', (req, res) => {
     console.log(req.body);
     const json = {
         response: 'ok',

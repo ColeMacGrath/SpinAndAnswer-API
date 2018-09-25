@@ -8,8 +8,7 @@ router.get('/', (req, res) => {
 });
 
 // register
-router.post('/', /* [registerMiddleWare.checkEmail,
-    registerMiddleWare.emptyUserData], */ (req, res) => {
+router.post('/', (req, res) => {
     const json = {
         response: 'ok',
         data: {
