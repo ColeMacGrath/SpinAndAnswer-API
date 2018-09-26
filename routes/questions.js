@@ -1,6 +1,7 @@
 const { Router } = require('express');
 
 const router = Router();
+
 router.get('/', (req, res) => {
     const questions = [
         {
@@ -17,6 +18,7 @@ router.get('/', (req, res) => {
 
     res.send(json);
 });
+
 
 router.get('/', (req, res) => {
     const json = {
@@ -40,10 +42,22 @@ router.post('/', (req, res) => {
     res.send(json);
 });
 
+//Question approval
+router.patch('/' (req, res) => {
+  const json = {
+
+    data: {
+      status: true;
+    }
+  };
+  res.send(json);
+});
+
+//Edit question
 router.put('/:question_id', (req, res) => {
     res.send('editado');
 });
-
+ //delete question
 router.delete('/question_id', (req, res) => {
     res.send(`${req.params.question_id} deleted`);
 });
