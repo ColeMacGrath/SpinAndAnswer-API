@@ -7,6 +7,7 @@ const loginRouter = require('./login');
 const gameRouter = require('./game');
 const registerRouter = require('./register');
 const menuRouter = require('./menu');
+const categoryRouter = require('./category');
 
 const router = Router();
 
