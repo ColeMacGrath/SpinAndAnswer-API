@@ -29,15 +29,4 @@ router.post('/multiplayer', gameMiddleware.emptyAddData, (req, res) => {
     res.send(json);
 });
 
-// Tipo de juego
-router.post('/type', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            oponent: req.body.oponent,
-        },
-    };
-    res.send(json);
-});
-
 module.exports = router;
