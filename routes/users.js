@@ -96,10 +96,6 @@ router.delete('/friends/:friend_id', (req, res) => {
     res.send(`${req.params.username} : ${req.params.user_id} deleted`);
 });
 
-router.delete('/user_id', (req, res) => {
-    res.send(`${req.params.username} : ${req.params.user_id} deleted`);
-});
-
 // REGISTER
 router.get('/', (req, res) => {
     res.send('registering');
