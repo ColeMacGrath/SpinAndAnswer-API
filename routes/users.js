@@ -4,6 +4,8 @@ const router = Router();
 
 const { usersController } = require('../controllers');
 
+const registerMiddleWare = require('../middlewares');
+
 router.get('/', usersController.getAll);
 
 router.get('/:user_id', (req, res) => {
@@ -94,8 +96,23 @@ router.delete('/friends/:friend_id', (req, res) => {
     res.send(`${req.params.username} : ${req.params.user_id} deleted`);
 });
 
-router.delete('/user_id', (req, res) => {
-    res.send(`${req.params.username} : ${req.params.user_id} deleted`);
+// REGISTER
+router.get('/', (req, res) => {
+    res.send('registering');
+});
+
+
+router.post('/', (req, res) => {
+    const json = {
+        response: 'ok',
+        data: {
+            username: req.body.username,
+            password: req.body.password,
+            name: req.body.name,
+            email: req.body.email,
+        },
+    };
+    res.send(json);
 });
 
 module.exports = router;
