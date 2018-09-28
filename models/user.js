@@ -9,39 +9,19 @@ class User {
         this.admin = admin;
     }
 
-    getName() {
-        return this.name;
+    static async getAll() {
+        const data = await database.selectAll('users');
+        const response = [];
+        data.forEach((r) => {
+          response.push(new User(r));
+        });
+        return response;
     }
 
-    getMail() {
-        return this.mail;
-    }
-
-    getUsername() {
-        return this.username;
-    }
-
-    getPassword() {
-        return this.password;
-    }
-
-    getAdminStatus() {
-        return this.admin;
-    }
-
-    save() {
-        database.create(this);
-    }
-
-    getAll() {
-        database.getAll(this);
-    }
-
-    delete(id) {
-        database.delete(this, id);
-    }
-
-    modify(name, username, mail, password, id) {
-        database.modifyUser(this, name, username, mail, password, id);
+    static async get(userId) {
+      const data = await database.singleSelect('users', userId);
+      return data.lenght !== 0 ? new User(data[0]) : data;
     }
 }
+
+module.exports = User;

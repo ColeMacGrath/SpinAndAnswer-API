@@ -1,1 +1,1 @@
-exports.usersController = require('./users');
+exports.usersCtrl = require('./users');

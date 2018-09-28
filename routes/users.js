@@ -1,12 +1,9 @@
-const { Router } = require('express');
-
-const router = Router();
-
-const { usersController } = require('../controllers');
+const router = require('express').Router();
+const { usersCtrl } = require('../controllers');
 
 const registerMiddleWare = require('../middlewares');
 
-router.get('/', usersController.getAll);
+router.get('/', usersCtrl.getAll);
 
 router.get('/:user_id', (req, res) => {
     const json = {
