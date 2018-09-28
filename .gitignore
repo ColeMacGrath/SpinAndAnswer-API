@@ -8988,3 +8988,8 @@ node_modules/dotenv/tests/test-cli-options.js
 node_modules/dotenv/tests/test-config-cli.js
 node_modules/dotenv/tests/test-config.js
 node_modules/dotenv/tests/test-parse.js
+package-lock.json
+node_modules/qs/test/.eslintrc
+node_modules/qs/.eslintrc
+node_modules/debug/.eslintrc
+node_modules/.bin/mime.cmd

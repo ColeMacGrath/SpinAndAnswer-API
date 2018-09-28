@@ -43,14 +43,14 @@ router.post('/', (req, res) => {
 });
 
 //Question approval
-router.patch('/' (req, res) => {
-  const json = {
-
-    data: {
-      status: true;
-    }
-  };
-  res.send(json);
+router.patch('/', (req, res) => {
+    const json = {
+        response: 'ok',
+        data: {
+            status: true
+        },
+    };
+    res.send(json);
 });
 
 //Edit question

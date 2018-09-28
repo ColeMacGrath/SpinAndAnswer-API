@@ -19,7 +19,7 @@ router.post('/start', (req, res) => {
 });
 
 // Play with others
-router.post('/multiplayer', gameMiddleware.emptyAddData, (req, res) => {
+router.post('/multiplayer', /* gameMiddleware.emptyAddData, */ (req, res) => {
     const json = {
         response: 'Ok',
         data: {
