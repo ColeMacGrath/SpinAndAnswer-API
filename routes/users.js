@@ -5,25 +5,12 @@ const registerMiddleWare = require('../middlewares');
 
 router.get('/', usersCtrl.getAll);
 
-router.get('/:user_id', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            user_id: req.params.user_id,
-            username: `UserName${req.params.user_id}`,
-            name: `Name${req.params.user_id}@mail.com`,
-            mail: `Mail${req.params.user_id}@mail.com`,
-        },
-    };
-
-    res.send(json);
-});
+router.get('/:userId', usersCtrl.get);
 
 router.post('/', (req, res) => {
     const json = {
         response: 'Ok',
         data: {
-            user_id: 0,
             username: req.body.username,
             name: req.body.name,
             mail: req.body.mail,
@@ -38,9 +25,7 @@ router.put('/:user_id', (req, res) => {
     res.send('editado');
 });
 
-router.delete('/user_id', (req, res) => {
-    res.send(`${req.params.username} : ${req.params.user_id} deleted`);
-});
+router.delete('/:userId', usersCtrl.deleteUser);
 
 // FRIENDS
 router.get('/friends', (req, res) => {

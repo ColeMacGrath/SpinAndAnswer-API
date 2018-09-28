@@ -2,21 +2,6 @@ const { User } = require('../models');
 
 class UserCtrl {
   constructor() {
-    // User data temporary hardcoded
-    this.data = [
-      {
-        id: 1,
-        name: 'juan1',
-        email: 'juan1@correo',
-      },
-      {
-        id: 2,
-        name: 'juan2',
-        email: 'juan2@correo',
-      },
-    ];
-
-    // Binding this to not loose context on router
     this.getAll = this.getAll.bind(this);
     this.get = this.get.bind(this);
     this.create = this.create.bind(this);
@@ -29,8 +14,6 @@ class UserCtrl {
     const json = {
       data: data,
       total_count: data.length,
-      per_page: 10,
-      page: 0,
     };
 
     // In case user was not found
@@ -43,8 +26,6 @@ class UserCtrl {
 
   async get(req, res) {
     let data = await User.get(req.params.userId);
-
-    // In case user was not found
     if (data.length === 0) {
       res.status(404);
     }
@@ -52,11 +33,18 @@ class UserCtrl {
     res.send(data);
   }
 
+  async deleteUser(req, res) {
+    let data = await User.remove(req.params.userId);
+    if (data.length === 0) {
+      res.status(404);
+    }
+  }
+
   create(req, res) {
-    const lastId = this.data[this.data.length - 1].id;
     const data = {
-      id: lastId + 1,
       name: req.body.name,
+      username: req.body.username,
+      password: req.body.password,
       email: req.body.email,
     };
 

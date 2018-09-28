@@ -22,6 +22,12 @@ class User {
       const data = await database.singleSelect('users', userId);
       return data.lenght !== 0 ? new User(data[0]) : data;
     }
+
+    static async remove(userId) {
+      const data = await database.remove('users', userId);
+      const response = 'eliminado';
+      return response; 
+    }
 }
 
 module.exports = User;

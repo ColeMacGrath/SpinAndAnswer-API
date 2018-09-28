@@ -29,13 +29,27 @@ class Database {
   }
 
   singleSelect(table, id) {
-    return new Promise((resolve, reject) => {
-      this.connection.query('SELECT * FROM ?? WHERE id = ?', [table, id], (error, results) => {
-        if (error) return reject(error);
-        return resolve(results);
-      });
+  return new Promise((resolve, reject) => {
+    this.connection.query('SELECT * FROM ?? WHERE user_id = ?', [table, id], (error, results) => {
+      if (error) return reject(error);
+      return resolve(results);
     });
+  });
+}
+
+remove(table, id) {
+return new Promise((resolve, reject) => {
+  this.connection.query('DELETE FROM ?? WHERE user_id = ?', [table, id], (error, results) => {
+    if (error) return reject(error);
+    return resolve('user deleted');
+  });
+});
+}
+
+  createUser(user) {
+
   }
+
 
   disconnect() {
     this.connection.end();
