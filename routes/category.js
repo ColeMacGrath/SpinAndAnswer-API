@@ -1,4 +1,5 @@
 const { Router } = require('express');
+
 const router = Router();
 
 router.get('/: category_id', (req, res) => {

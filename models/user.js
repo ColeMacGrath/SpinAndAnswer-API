@@ -13,20 +13,19 @@ class User {
         const data = await database.selectAll('users');
         const response = [];
         data.forEach((r) => {
-          response.push(new User(r));
+            response.push(new User(r));
         });
         return response;
     }
 
     static async get(userId) {
-      const data = await database.singleSelect('users', userId);
-      return data.lenght !== 0 ? new User(data[0]) : data;
+        const data = await database.singleSelect('users', userId);
+        return data.lenght !== 0 ? new User(data[0]) : data;
     }
 
-    static async remove(userId) {
-      const data = await database.remove('users', userId);
-      const response = 'eliminado';
-      return response; 
+    static async changeActive(userId) {
+      const data = await database.changeActive('users', userId);
+      return userId;
     }
 }
 

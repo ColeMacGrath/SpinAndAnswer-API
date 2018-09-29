@@ -7,6 +7,8 @@ router.get('/', usersCtrl.getAll);
 
 router.get('/:userId', usersCtrl.get);
 
+router.delete('/:userId', usersCtrl.changeActive);
+
 router.post('/', (req, res) => {
     const json = {
         response: 'Ok',
@@ -24,8 +26,6 @@ router.post('/', (req, res) => {
 router.put('/:user_id', (req, res) => {
     res.send('editado');
 });
-
-router.delete('/:userId', usersCtrl.deleteUser);
 
 // FRIENDS
 router.get('/friends', (req, res) => {

@@ -5,4 +5,4 @@ function emptyAddData (err, req, res, next) {
     } else {
         next();
     }
-};
+}

@@ -1,4 +1,4 @@
-//Valida que el email sea correcto
+// Valida que el email sea correcto
 function checkEmail (err, req, res, next) {
     const valid = '';
     if (valid.test(req.body.email)) {
@@ -6,4 +6,4 @@ function checkEmail (err, req, res, next) {
     } else {
         next();
     }
-};
+}
