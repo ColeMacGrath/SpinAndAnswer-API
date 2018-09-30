@@ -47,7 +47,7 @@ class UserCtrl {
     //Logical delete
     async changeActive(req, res) {
       let data = await User.changeActive(req.params.userId);
-      if (data.lenght === 0) {
+      if (data.changedRows === 0) {
         res.status(404);
       }
       res.send(data);

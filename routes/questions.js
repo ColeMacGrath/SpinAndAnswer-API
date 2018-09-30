@@ -42,22 +42,22 @@ router.post('/', (req, res) => {
     res.send(json);
 });
 
-//Question approval
+// Question approval
 router.patch('/', (req, res) => {
     const json = {
         response: 'ok',
         data: {
-            status: true
+            status: true,
         },
     };
     res.send(json);
 });
 
-//Edit question
+// Edit question
 router.put('/:question_id', (req, res) => {
     res.send('editado');
 });
- //delete question
+// delete question
 router.delete('/question_id', (req, res) => {
     res.send(`${req.params.question_id} deleted`);
 });

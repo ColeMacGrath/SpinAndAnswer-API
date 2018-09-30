@@ -24,8 +24,8 @@ class User {
     }
 
     static async changeActive(userId) {
-      const data = await database.changeActive('users', userId);
-      return userId;
+        const data = await database.changeActive('users', userId);
+        return data;
     }
 }
 

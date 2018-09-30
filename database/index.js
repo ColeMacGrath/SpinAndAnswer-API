@@ -37,10 +37,11 @@ class Database {
     }
 
     changeActive(table, id) {
+        // let tableRow = table.substring(0, table.length - 1);
+        // tableRow = tableRow.concat('_id');
         return new Promise((resolve, reject) => {
             this.connection.query('UPDATE ?? SET active = CASE WHEN active = 0 THEN 1 ELSE 0 END WHERE user_id = ?', [table, id], (error, results) => {
                 if (error) return reject(error);
-                console.log(results);
                 return resolve(results);
             });
         });
