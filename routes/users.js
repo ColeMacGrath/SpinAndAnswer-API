@@ -9,19 +9,17 @@ router.get('/:userId', usersCtrl.get);
 
 router.delete('/:userId', usersCtrl.changeActive);
 
-router.post('/', (req, res) => {
-    const json = {
-        response: 'Ok',
-        data: {
-            username: req.body.username,
-            name: req.body.name,
-            mail: req.body.mail,
-            password: req.body.password,
-        },
-    };
-    console.log(json);
-    res.send(json);
-});
+router.post('/', (req, res, next) => {
+  registerMiddleWare.validator.validate(req, res, next, {
+    body: {
+      name: 'word,required',
+      mail: 'email,required',
+      username: 'word,required',
+      password: 'word,required',
+    },
+  });
+}, usersCtrl.create);
+
 
 router.put('/:user_id', (req, res) => {
     res.send('editado');

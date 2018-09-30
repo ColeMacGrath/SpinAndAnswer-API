@@ -1,12 +1,14 @@
 const database = require('../database');
 
 class User {
-    constructor(id, name, mail, username, password, admin) {
+    constructor(id, name, mail, username, password, admin, active) {
         this.id = id;
         this.name = name;
+        this.mail = mail;
         this.username = username;
         this.password = password;
         this.admin = admin;
+        this.active = active;
     }
 
     static async getAll() {
@@ -26,6 +28,16 @@ class User {
     static async changeActive(userId) {
       const data = await database.changeActive('users', userId);
       return userId;
+    }
+
+    static async create({name, mail, username, password}){
+      let response = await database.insert('users', {name, mail, username, password});
+
+      const id = response.insertId;
+      if (id > 0){
+        return new User({id, name, mail, username, password});
+      }
+      return [];
     }
 }
 

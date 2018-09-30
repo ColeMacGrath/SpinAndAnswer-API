@@ -9,39 +9,28 @@ class UserCtrl {
     }
 
     async getAll(req, res) {
-        let data = await User.getAll();
+      let data = await User.getAll();
 
-        const json = {
-      data: data,
-      total_count: data.length,
-    };
+      const json = {
+        data: data,
+        total_count: data.length,
+      };
 
-    // In case user was not found
-    if (data.length === 0) {
-      res.status(204);
+      // In case user was not found
+      if (data.length === 0) {
+        res.status(204);
+      }
+
+      res.send(json);
     }
-
-    res.send(json);
-  }
 
     async get(req, res) {
-        let data = await User.get(req.params.userId);
-        if (data.length === 0) {
-          res.status(404);
-    }
+      let data = await User.get(req.params.userId);
+      if (data.length === 0) {
+        res.status(404);
+      }
 
-    res.send(data);
-  }
-
-    create(req, res) {
-        const data = {
-            name: req.body.name,
-            username: req.body.username,
-            password: req.body.password,
-            email: req.body.email,
-        };
-        this.data.push(data);
-        res.status(201).send(data);
+      res.send(data);
     }
 
     //Logical delete
@@ -51,6 +40,11 @@ class UserCtrl {
         res.status(404);
       }
       res.send(data);
+    }
+
+    async create(req, res, next) {
+      let data = await User.create(req.body);
+      res.status(201).send(data);
     }
 }
 

@@ -46,6 +46,14 @@ class Database {
         });
     }
 
+    insert(table, resource){
+      return new Promise((resolve, reject) => {
+        this.connection.query('INSERT INTO ?? SET ?', [table, resource], (error, results) => {
+          return resolve(results);
+        });
+      });
+    }
+
     disconnect() {
         this.connection.end();
     }
