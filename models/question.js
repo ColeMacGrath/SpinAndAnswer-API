@@ -25,6 +25,15 @@ class Question {
         const data = await database.singleSelect('questions', questionId);
         return data;
     }
+
+    static async create({ category, question, correct_answer, answerOne, answerTwo, answerThree }) {
+        const response = await database.insert('questions', { category, question, correct_answer, answerOne, answerTwo, answerThree });
+        const id = response.insertId;
+        if (id >  0) {
+            return new Question({ id, category, question, correct_answer, answerOne, answerTwo, answerThree }) ;
+        }
+        return [];
+    }
 }
 
 module.exports = Question;

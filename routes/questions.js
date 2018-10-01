@@ -6,15 +6,7 @@ router.get('/', questionCtrl.getAll);
 
 router.get('/:questionId', questionCtrl.get);
 
-router.post('/', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            oponent: req.body.answer,
-        },
-    };
-    res.send(json);
-});
+router.post('/', questionCtrl.create);
 
 // Question approval
 router.patch('/', (req, res) => {

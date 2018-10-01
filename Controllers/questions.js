@@ -4,6 +4,7 @@ class QuestionCtrl {
     constructor() {
         this.getAll = this.getAll.bind(this);
         this.get = this.get.bind(this);
+        this.create = this.create.bind(this);
     }
 
     async getAll(req, res) {
@@ -29,6 +30,11 @@ class QuestionCtrl {
       }
 
       res.send(data);
+    }
+
+    async create(req, res, next) {
+      let data = await Question.create(req.body);
+      res.status(201).send(data);
     }
   }
 
