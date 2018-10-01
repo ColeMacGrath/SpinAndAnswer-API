@@ -34,6 +34,11 @@ class Question {
         }
         return [];
     }
+
+    static async changeActive(questionId) {
+      const data = await database.changeActive('questions', questionId);
+      return data;
+  }
 }
 
 module.exports = Question;

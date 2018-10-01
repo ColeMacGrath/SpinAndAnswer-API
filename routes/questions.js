@@ -9,15 +9,7 @@ router.get('/:questionId', questionCtrl.get);
 router.post('/', questionCtrl.create);
 
 // Question approval
-router.patch('/', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            status: true,
-        },
-    };
-    res.send(json);
-});
+router.patch('/:questionId', questionCtrl.changeActive);
 
 // Edit question
 router.put('/:question_id', (req, res) => {

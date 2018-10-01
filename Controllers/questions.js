@@ -36,6 +36,14 @@ class QuestionCtrl {
       let data = await Question.create(req.body);
       res.status(201).send(data);
     }
-  }
+
+    async changeActive(req, res) {
+      let data = await Question.changeActive(req.params.questionId);
+      if (data.changedRows === 0) {
+        res.status(404);
+      }
+      res.send(data);
+    }
+}
 
 module.exports = new QuestionCtrl();
