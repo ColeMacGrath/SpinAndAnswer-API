@@ -11,6 +11,9 @@ router.post('/', questionCtrl.create);
 // Question approval
 router.patch('/:questionId', questionCtrl.changeActive);
 
+router.patch('/change/:questionId', questionCtrl.changeCategory);
+
+
 // Edit question
 router.put('/:question_id', (req, res) => {
     res.send('editado');

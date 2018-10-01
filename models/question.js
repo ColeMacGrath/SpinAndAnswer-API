@@ -36,9 +36,14 @@ class Question {
     }
 
     static async changeActive(questionId) {
-      const data = await database.changeActive('questions', questionId);
-      return data;
-  }
+        const data = await database.changeActive('questions', questionId);
+        return data;
+    }
+
+    static async changeCategory(questionId, category) {
+        const data = await database.changeCategory('questions', questionId, category);
+        return data;
+    }
 }
 
 module.exports = Question;

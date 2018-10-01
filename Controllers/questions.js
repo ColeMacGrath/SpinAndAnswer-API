@@ -5,6 +5,8 @@ class QuestionCtrl {
         this.getAll = this.getAll.bind(this);
         this.get = this.get.bind(this);
         this.create = this.create.bind(this);
+        this.changeActive = this.changeActive.bind(this);
+        this.changeCategory = this.changeCategory.bind(this);
     }
 
     async getAll(req, res) {
@@ -39,6 +41,14 @@ class QuestionCtrl {
 
     async changeActive(req, res) {
       let data = await Question.changeActive(req.params.questionId);
+      if (data.changedRows === 0) {
+        res.status(404);
+      }
+      res.send(data);
+    }
+
+    async changeCategory(req, res) {
+      let data = await Question.changeCategory(req.params.questionId, req.body.category);
       if (data.changedRows === 0) {
         res.status(404);
       }

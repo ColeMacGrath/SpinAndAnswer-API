@@ -66,6 +66,16 @@ class Database {
         });
     }
 
+    changeCategory(table, id, category) {
+        return new Promise((resolve, reject) => {
+            this.connection.query(`UPDATE ?? SET category = ? WHERE question_id = ${id}`, [table, category], (error, results) => {
+                console.log(`UPDATE ?? SET category = ? WHERE question_id = ${id}`, [table, category]);
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+    }
+
     disconnect() {
         this.connection.end();
     }
