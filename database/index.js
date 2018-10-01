@@ -37,10 +37,11 @@ class Database {
     }
 
     changeActive(table, id) {
-        // let tableRow = table.substring(0, table.length - 1);
-        // tableRow = tableRow.concat('_id');
+        let tableRow = table.substring(0, table.length - 1);
+        tableRow = tableRow.concat('_id');
         return new Promise((resolve, reject) => {
-            this.connection.query('UPDATE ?? SET active = CASE WHEN active = 0 THEN 1 ELSE 0 END WHERE user_id = ?', [table, id], (error, results) => {
+            this.connection.query(`UPDATE ?? SET active = CASE WHEN active = 0 THEN 1 ELSE 0 END WHERE ${tableRow} = ?`, [table, id], (error, results) => {
+
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -48,11 +49,19 @@ class Database {
     }
 
     insert(table, resource){
-      return new Promise((resolve, reject) => {
-        this.connection.query('INSERT INTO ?? SET ?', [table, resource], (error, results) => {
-          return resolve(results);
+        return new Promise((resolve, reject) => {
+          this.connection.query('INSERT INTO ?? SET ?', [table, resource], (error, results) => {
+            return resolve(results);
+          });
         });
-      });
+    }
+
+    update(table, id, resource) {
+        let tableRow = table.substring(0, table.length - 1);
+        tableRow = tableRow.concat('_id');
+        return new Promise((resolve, reject) => {
+            this.connection.query(`UPDATE ?? SET ? WHERE ${tableRow} = ${id}`, [table, resource], (error, results) => resolve(results));
+        });
     }
 
     disconnect() {

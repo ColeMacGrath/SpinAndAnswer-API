@@ -6,6 +6,7 @@ class UserCtrl {
         this.get = this.get.bind(this);
         this.create = this.create.bind(this);
         this.delete = this.changeActive.bind(this);
+        this.modify = this.modify.bind(this);
     }
 
     async getAll(req, res) {
@@ -44,6 +45,11 @@ class UserCtrl {
 
     async create(req, res, next) {
       let data = await User.create(req.body);
+      res.status(201).send(data);
+    }
+
+    async modify(req, res, next) {
+      let data = await User.modify(req.params.userId, req.body);
       res.status(201).send(data);
     }
 }

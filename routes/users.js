@@ -20,10 +20,7 @@ router.post('/', (req, res, next) => {
   });
 }, usersCtrl.create);
 
-
-router.put('/:user_id', (req, res) => {
-    res.send('editado');
-});
+router.put('/:userId', usersCtrl.modify);
 
 // FRIENDS
 router.get('/friends', (req, res) => {

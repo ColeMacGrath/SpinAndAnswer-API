@@ -39,6 +39,11 @@ class User {
       }
       return [];
     }
+
+    static async modify(userId, { name, mail, username, password, admin, active }) {
+        const data = await database.update('users', userId, {name, mail, username, password, admin, active });
+        return data;
+    }
 }
 
 module.exports = User;
