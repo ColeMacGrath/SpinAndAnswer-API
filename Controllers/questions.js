@@ -3,6 +3,7 @@ const { Question } = require('../models');
 class QuestionCtrl {
     constructor() {
         this.getAll = this.getAll.bind(this);
+        this.get = this.get.bind(this);
     }
 
     async getAll(req, res) {
@@ -19,6 +20,15 @@ class QuestionCtrl {
       }
 
       res.send(json);
+    }
+
+    async get(req, res) {
+      let data = await Question.get(req.params.questionId);
+      if (data.length === 0) {
+          res.status(404);
+      }
+
+      res.send(data);
     }
   }
 

@@ -28,8 +28,10 @@ class Database {
     }
 
     singleSelect(table, id) {
+        let tableRow = table.substring(0, table.length - 1);
+        tableRow = tableRow.concat('_id');
         return new Promise((resolve, reject) => {
-            this.connection.query('SELECT * FROM ?? WHERE user_id = ?', [table, id], (error, results) => {
+            this.connection.query(`SELECT * FROM ?? WHERE ${tableRow} = ?`, [table, id], (error, results) => {
                 if (error) return reject(error);
                 return resolve(results);
             });

@@ -4,17 +4,7 @@ const questionMiddleWare = require('../middlewares');
 
 router.get('/', questionCtrl.getAll);
 
-router.get('/:questionId', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            question_id: 0,
-            question: 'Question Hola Mundo',
-            answers: [{}],
-        },
-    };
-    res.send(json);
-});
+router.get('/:questionId', questionCtrl.get);
 
 router.post('/', (req, res) => {
     const json = {

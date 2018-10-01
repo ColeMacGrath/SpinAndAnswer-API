@@ -20,6 +20,11 @@ class Question {
         });
         return response;
     }
+
+    static async get(questionId) {
+        const data = await database.singleSelect('questions', questionId);
+        return data;
+    }
 }
 
 module.exports = Question;
