@@ -1,26 +1,10 @@
-const { Router } = require('express');
+const router = require('express').Router();
+const { questionCtrl } = require('../controllers');
+const questionMiddleWare = require('../middlewares');
 
-const router = Router();
+router.get('/', questionCtrl.getAll);
 
-router.get('/', (req, res) => {
-    const questions = [
-        {
-            question_id: 1,
-            question: 'Question',
-            answers: {},
-        },
-    ];
-    const json = {
-        response: 'Ok',
-        data: questions,
-        total: 2,
-    };
-
-    res.send(json);
-});
-
-
-router.get('/', (req, res) => {
+router.get('/:questionId', (req, res) => {
     const json = {
         response: 'ok',
         data: {
