@@ -22,7 +22,7 @@ class User {
 
     static async get(userId) {
         const data = await database.singleSelect('users', userId);
-        return data.lenght !== 0 ? new User(data[0]) : data;
+        return data;
     }
 
     static async changeActive(userId) {
