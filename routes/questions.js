@@ -13,14 +13,7 @@ router.patch('/:questionId', questionCtrl.changeActive);
 
 router.patch('/change/:questionId', questionCtrl.changeCategory);
 
-
 // Edit question
-router.put('/:question_id', (req, res) => {
-    res.send('editado');
-});
-// delete question
-router.delete('/question_id', (req, res) => {
-    res.send(`${req.params.question_id} deleted`);
-});
+router.put('/:questionId', questionCtrl.modify);
 
 module.exports = router;

@@ -7,6 +7,7 @@ class QuestionCtrl {
         this.create = this.create.bind(this);
         this.changeActive = this.changeActive.bind(this);
         this.changeCategory = this.changeCategory.bind(this);
+        this.modify = this.modify.bind(this);
     }
 
     async getAll(req, res) {
@@ -53,6 +54,11 @@ class QuestionCtrl {
         res.status(404);
       }
       res.send(data);
+    }
+
+    async modify(req, res, next) {
+      let data = await Question.modify(req.params.questionId, req.body);
+      res.status(201).send(data);
     }
 }
 

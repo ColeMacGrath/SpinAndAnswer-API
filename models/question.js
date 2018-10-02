@@ -44,6 +44,11 @@ class Question {
         const data = await database.changeCategory('questions', questionId, category);
         return data;
     }
+
+    static async modify(questionId, { category, question, correct_answer, answerOne, answerTwo, answerThree }) {
+        const data = await database.update('questions', questionId, { category, question, correct_answer, answerOne, answerTwo, answerThree } );
+        return data;
+    }
 }
 
 module.exports = Question;

@@ -43,7 +43,6 @@ class Database {
         tableRow = tableRow.concat('_id');
         return new Promise((resolve, reject) => {
             this.connection.query(`UPDATE ?? SET active = CASE WHEN active = 0 THEN 1 ELSE 0 END WHERE ${tableRow} = ?`, [table, id], (error, results) => {
-
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -69,7 +68,6 @@ class Database {
     changeCategory(table, id, category) {
         return new Promise((resolve, reject) => {
             this.connection.query(`UPDATE ?? SET category = ? WHERE question_id = ${id}`, [table, category], (error, results) => {
-                console.log(`UPDATE ?? SET category = ? WHERE question_id = ${id}`, [table, category]);
                 if (error) return reject(error);
                 return resolve(results);
             });
