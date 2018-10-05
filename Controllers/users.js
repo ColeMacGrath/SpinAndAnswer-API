@@ -9,6 +9,7 @@ class UserCtrl {
         this.modify = this.modify.bind(this);
         this.getFriend = this.getFriend.bind(this);
         this.getAllFriends = this.getAllFriends.bind(this);
+        this.addFriend = this.addFriend.bind(this);
     }
 
     async getAll(req, res) {
@@ -76,6 +77,11 @@ class UserCtrl {
 
     async modify(req, res, next) {
       let data = await User.modify(req.params.userId, req.body);
+      res.status(201).send(data);
+    }
+
+    async addFriend(req, res, next) {
+      let data = await User.addFriend(req.body.userId, req.body.friendId);
       res.status(201).send(data);
     }
 }

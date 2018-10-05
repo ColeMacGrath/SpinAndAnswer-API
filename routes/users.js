@@ -27,17 +27,7 @@ router.get('/friends/:friendId', usersCtrl.getFriend);
 
 router.get('/:userId/friends', usersCtrl.getAllFriends);
 
-router.post('/friends/', (req, res) => {
-    console.log(req.body);
-    const json = {
-        response: 'ok',
-        data: {
-            user_id: 100,
-            name: req.body.name,
-        },
-    };
-    res.send(json);
-});
+router.post('/friends/', usersCtrl.addFriend);
 
 router.delete('/friends/:friend_id', (req, res) => {
     res.send(`${req.params.username} : ${req.params.user_id} deleted`);

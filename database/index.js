@@ -83,6 +83,15 @@ class Database {
       });
     }
 
+    insertFriend(userId, friendId) {
+        return new Promise((resolve, reject) => {
+            this.connection.query(`CALL insertFriends(${userId}, ${friendId})`, (error, results) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+    }
+
     disconnect() {
         this.connection.end();
     }

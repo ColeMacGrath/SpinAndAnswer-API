@@ -50,6 +50,11 @@ class User {
         return data;
     }
 
+    static async addFriend(userId, friendId) {
+        const data = await database.insertFriend(userId, friendId);
+        return data;
+    }
+
     static async selectAllFriends(userId) {
         const friendsId = await database.getFriendsId(userId);
         var users = [];
