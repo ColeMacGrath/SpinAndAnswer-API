@@ -49,6 +49,22 @@ class User {
         const data = await database.update('users', userId, {name, mail, username, password, admin, active });
         return data;
     }
+
+    static async selectAllFriends(userId) {
+        const friendsId = await database.getFriendsId(userId);
+        var users = [];
+        var response = [];
+
+        for (const id of friendsId) {
+          users.push( await database.singleSelect('users', Object.values(id)))
+        }
+
+        users.forEach((u) => {
+          response.push(new User(u));
+        });
+
+        return response;
+    }
 }
 
 module.exports = User;

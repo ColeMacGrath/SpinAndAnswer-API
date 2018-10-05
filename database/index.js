@@ -74,6 +74,15 @@ class Database {
         });
     }
 
+    getFriendsId(userId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT friend_id FROM friends WHERE friend_user_id = ${userId}`, (error, results) => {
+            if (error) return reject(error);
+            return resolve(results);
+        });
+      });
+    }
+
     disconnect() {
         this.connection.end();
     }

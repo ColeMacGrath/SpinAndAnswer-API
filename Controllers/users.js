@@ -8,6 +8,7 @@ class UserCtrl {
         this.delete = this.changeActive.bind(this);
         this.modify = this.modify.bind(this);
         this.getFriend = this.getFriend.bind(this);
+        this.getAllFriends = this.getAllFriends.bind(this);
     }
 
     async getAll(req, res) {
@@ -42,6 +43,21 @@ class UserCtrl {
       }
 
       res.send(data);
+    }
+
+    async getAllFriends(req, res) {
+      let data = await User.selectAllFriends(req.params.userId);
+      const json = {
+        data: data,
+        total_count: data.length,
+      };
+
+      // In case user was not found
+      if (data.length === 0) {
+        res.status(404);
+      }
+
+      res.send(json);
     }
 
     //Logical delete

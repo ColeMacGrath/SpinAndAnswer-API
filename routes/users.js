@@ -25,17 +25,7 @@ router.put('/:userId', usersCtrl.modify);
 // FRIENDS
 router.get('/friends/:friendId', usersCtrl.getFriend);
 
-router.get('/friends/:friend_id', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            username: `UserName${req.params.user_id}`,
-            name: `Name${req.params.user_id}@mail.com`,
-            mail: `Mail${req.params.user_id}@mail.com`,
-        },
-    };
-    res.send(json);
-});
+router.get('/:userId/friends', usersCtrl.getAllFriends);
 
 router.post('/friends/', (req, res) => {
     console.log(req.body);
