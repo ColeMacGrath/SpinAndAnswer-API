@@ -23,27 +23,7 @@ router.post('/', (req, res, next) => {
 router.put('/:userId', usersCtrl.modify);
 
 // FRIENDS
-router.get('/friends', (req, res) => {
-    const users = [
-        {
-            username: 'Juan',
-            name: 'juan',
-            email: 'mail@mail.com',
-        },
-        {
-            username: 'Pedro',
-            name: 'pedro',
-            email: 'mail2@mail2.com',
-        },
-    ];
-    const json = {
-        response: 'Ok',
-        data: users,
-        total: 2,
-    };
-
-    res.send(json);
-});
+router.get('/friends/:friendId', usersCtrl.getFriend);
 
 router.get('/friends/:friend_id', (req, res) => {
     const json = {
@@ -71,25 +51,6 @@ router.post('/friends/', (req, res) => {
 
 router.delete('/friends/:friend_id', (req, res) => {
     res.send(`${req.params.username} : ${req.params.user_id} deleted`);
-});
-
-// REGISTER
-router.get('/', (req, res) => {
-    res.send('registering');
-});
-
-
-router.post('/', (req, res) => {
-    const json = {
-        response: 'ok',
-        data: {
-            username: req.body.username,
-            password: req.body.password,
-            name: req.body.name,
-            email: req.body.email,
-        },
-    };
-    res.send(json);
 });
 
 module.exports = router;

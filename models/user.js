@@ -25,6 +25,11 @@ class User {
         return data;
     }
 
+    static async getFriend(friendId) {
+      const data = await database.singleSelect('users', friendId);
+      return data;
+    }
+
     static async changeActive(userId) {
         const data = await database.changeActive('users', userId);
         return data;

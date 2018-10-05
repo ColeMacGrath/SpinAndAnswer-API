@@ -7,6 +7,7 @@ class UserCtrl {
         this.create = this.create.bind(this);
         this.delete = this.changeActive.bind(this);
         this.modify = this.modify.bind(this);
+        this.getFriend = this.getFriend.bind(this);
     }
 
     async getAll(req, res) {
@@ -27,6 +28,15 @@ class UserCtrl {
 
     async get(req, res) {
       let data = await User.get(req.params.userId);
+      if (data.length === 0) {
+        res.status(404);
+      }
+
+      res.send(data);
+    }
+
+    async getFriend(req, res) {
+      let data = await User.getFriend(req.params.friendId);
       if (data.length === 0) {
         res.status(404);
       }
