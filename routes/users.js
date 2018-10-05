@@ -31,4 +31,6 @@ router.post('/friends/', usersCtrl.addFriend);
 
 router.delete('/friends/:friendId', usersCtrl.modifyFriendship);
 
+router.patch('/friends/', usersCtrl.acceptFriend);
+
 module.exports = router;
