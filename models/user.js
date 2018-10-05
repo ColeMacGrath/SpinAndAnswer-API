@@ -51,8 +51,14 @@ class User {
     }
 
     static async addFriend(userId, friendId) {
+      const friends = await database.checkFriendship(userId, friendId);
+      if (friends.length === 0) {
         const data = await database.insertFriend(userId, friendId);
         return data;
+      } else {
+        const data = [];
+        return data;
+      }
     }
 
     static async modifyFriendship(userId, friendId) {

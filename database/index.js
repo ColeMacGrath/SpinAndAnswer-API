@@ -101,6 +101,42 @@ class Database {
         });
     }
 
+    checkFriendship(userId, friendId) {
+        return new Promise((resolve, reject) => {
+            this.connection.query(`SELECT * FROM friends WHERE friend_user_id = ${userId} and friend_id =${friendId}`, (error, results) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+    }
+
+    selectAllQuestions() {
+        return new Promise((resolve, reject) => {
+          this.connection.query('SELECT * FROM questions', (error, results) => {
+            if (error) return reject(error);
+            return resolve(results);
+          });
+        });
+    }
+
+    getQuestions(from, to) {
+        return new Promise((resolve, reject) => {
+          this.connection.query(`SELECT * from questions LIMIT ${from}, ${to}`, (error, results) => {
+            if (error) return reject(error)
+            return resolve(results);
+          });
+        });
+    }
+
+    getQuestionsOf(categoryId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT * FROM questions WHERE category = ${categoryId}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results)
+        });
+      });
+    }
+
     disconnect() {
         this.connection.end();
     }

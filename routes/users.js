@@ -15,7 +15,7 @@ router.post('/', (req, res, next) => {
       name: 'word,required',
       mail: 'email,required',
       username: 'word,required',
-      password: 'word,required',
+      password: 'word,required'
     },
   });
 }, usersCtrl.create);

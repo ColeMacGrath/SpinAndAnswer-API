@@ -89,6 +89,10 @@ class UserCtrl {
 
     async addFriend(req, res, next) {
       let data = await User.addFriend(req.body.userId, req.body.friendId);
+      console.log(data.length);
+      if (data.length === 0) {
+          res.status(404).send(data);
+      }
       res.status(201).send(data);
     }
 
