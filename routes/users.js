@@ -29,8 +29,6 @@ router.get('/:userId/friends', usersCtrl.getAllFriends);
 
 router.post('/friends/', usersCtrl.addFriend);
 
-router.delete('/friends/:friend_id', (req, res) => {
-    res.send(`${req.params.username} : ${req.params.user_id} deleted`);
-});
+router.delete('/friends/:friendId', usersCtrl.modifyFriendship);
 
 module.exports = router;

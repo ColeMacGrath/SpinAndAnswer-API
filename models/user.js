@@ -55,6 +55,12 @@ class User {
         return data;
     }
 
+    static async modifyFriendship(userId, friendId) {
+        const data = await database.changeStatus(userId, friendId);
+        const friendsId = await database.getFriendsId(userId);
+        return data;
+    }
+
     static async selectAllFriends(userId) {
         const friendsId = await database.getFriendsId(userId);
         var users = [];

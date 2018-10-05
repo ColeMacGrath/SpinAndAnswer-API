@@ -74,13 +74,22 @@ class Database {
         });
     }
 
-    getFriendsId(userId) {
-      return new Promise((resolve, reject) => {
-        this.connection.query(`SELECT friend_id FROM friends WHERE friend_user_id = ${userId}`, (error, results) => {
-            if (error) return reject(error);
-            return resolve(results);
+    changeStatus(userId, friendId) {
+        return new Promise((resolve, reject) => {
+            this.connection.query(`CALL changeFriendship(${userId}, ${friendId})`, (error, results) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
         });
-      });
+    }
+
+    getFriendsId(userId) {
+        return new Promise((resolve, reject) => {
+            this.connection.query(`SELECT friend_id FROM friends WHERE friend_user_id = ${userId}`, (error, results) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
     }
 
     insertFriend(userId, friendId) {
