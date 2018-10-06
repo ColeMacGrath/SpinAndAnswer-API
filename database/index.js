@@ -130,9 +130,18 @@ class Database {
 
     getQuestionsOf(categoryId) {
       return new Promise((resolve, reject) => {
-        this.connection.query(`SELECT * FROM questions WHERE category = ${categoryId}`, (error, results) => {
+        this.connection.query(`SELECT * FROM questions WHERE category = ${categoryId} AND active = 1`, (error, results) => {
           if (error) return reject(error)
-          return resolve(results)
+          return resolve(results);
+        });
+      });
+    }
+
+    getMax(table) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT MAX(category) FROM ${table}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
         });
       });
     }

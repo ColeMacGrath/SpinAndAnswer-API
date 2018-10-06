@@ -48,6 +48,23 @@ class GameCtrl {
 
       res.send(json);
     }
+
+    async showGame(req, res) {
+      var randomQuestion = await Game.getRandomQuestion('questions');
+      res.send(randomQuestion);
+      var reload = await this.showGame(req, res);
+      console.log('Reload: ' + reload);
+      setTimeout(function() { this.showGame }, 1000);
+    }
+
+    async answerQuestion(req, res) {
+      let question = await Game.getAnswer(req.body.questionId, req.body.answer);
+      if (question) {
+        res.send('Correcto');
+      } else {
+        res.send('Incorecto');
+      }
+    }
 }
 
 module.exports = new GameCtrl();

@@ -25,6 +25,28 @@ class Game {
       const data = await database.getQuestionsOf(categoryId);
       return data;
     }
+
+    static async getRandomQuestion(table) {
+      var data = await database.getMax(table);
+      const maxValue = Object.values(data[0]);
+      var random = Math.floor(Math.random() * maxValue) + 1;
+      const category = await database.getQuestionsOf(random);
+      const maxQuestions = category.length;
+      random = Math.floor(Math.random() * maxQuestions);
+      var question = Object.values(category[random]);
+      console.log('Question: ' + question);
+      return question;
+    }
+
+    static async getAnswer(questionId, answer) {
+      var correct = false;
+      const question = await database.singleSelect('questions', questionId);
+      const correctAnswer = question[0].correct_answer;
+      if (answer == correctAnswer) {
+        correct = true;
+      }
+      return correct;
+    }
 }
 
 module.exports = Game;
