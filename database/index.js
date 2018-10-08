@@ -137,9 +137,72 @@ class Database {
       });
     }
 
-    getMax(table) {
+    getMax(column, table) {
       return new Promise((resolve, reject) => {
-        this.connection.query(`SELECT MAX(category) FROM ${table}`, (error, results) => {
+        this.connection.query(`SELECT MAX(${column}) FROM ${table}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
+        });
+      });
+    }
+
+    createGame(userId, rivalId, category) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`CALL createGame(${userId}, ${rivalId}, ${category})`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(this.getMax('game_id', 'game'));
+        });
+      });
+    }
+
+    getCategory(gameId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT category FROM game WHERE game_id = ${gameId}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
+        });
+      });
+    }
+
+    getTurn(gameId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT turn FROM game WHERE game_id = ${gameId}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
+        });
+      });
+    }
+
+    sumTurn(gameId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`UPDATE game SET turn = turn + 1 WHERE game_id = ${gameId}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
+        });
+      });
+    }
+
+    updatePoints(gameId, user_id, points) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`CALL updatePoints(${gameId}, ${user_id}, ${points})`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
+        });
+      });
+    }
+
+    getIdOf(colum, gameId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT ${colum} FROM game WHERE game_id = ${gameId}`, (error, results) => {
+          if (error) return reject(error)
+          return resolve(results);
+        });
+      });
+    }
+
+    getGameResults(gameId) {
+      return new Promise((resolve, reject) => {
+        this.connection.query(`SELECT * FROM game WHERE game_id = ${gameId}`, (error, results) => {
           if (error) return reject(error)
           return resolve(results);
         });

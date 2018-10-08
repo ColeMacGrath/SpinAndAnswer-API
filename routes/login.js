@@ -7,7 +7,7 @@ router.get('/', (req, res) => {
     res.send('logging in');
 });
 
-router.post('/', /* loginMiddleWare.emptyUserData, */ (req, res) => {
+router.post('/', (req, res) => {
     console.log(req.body);
     const json = {
         response: 'Ok',

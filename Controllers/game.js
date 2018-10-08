@@ -1,8 +1,15 @@
 const { Game } = require('../models');
+var express = require('express');
+var router = express.Router();
 
 class GameCtrl {
     constructor() {
         this.getAll = this.getAll.bind(this);
+        this.getQuestions = this.getQuestions.bind(this);
+        this.getQuestionsOf = this.getQuestionsOf.bind(this);
+        this.showGame = this.showGame.bind(this);
+        this.answerQuestion = this.answerQuestion.bind(this);
+        this.createGame = this.createGame.bind(this);
     }
 
     async getAll(req, res) {
@@ -50,20 +57,54 @@ class GameCtrl {
     }
 
     async showGame(req, res) {
-      var randomQuestion = await Game.getRandomQuestion('questions');
-      res.send(randomQuestion);
-      var reload = await this.showGame(req, res);
-      console.log('Reload: ' + reload);
-      setTimeout(function() { this.showGame }, 1000);
+      let gameId = req.params.gameId;
+      let category = await Game.getCategory(gameId);
+      let questions = await Game.getQuestionsOf(category);
+      let randomQuestion = Math.floor(Math.random() * questions.length);
+
+      const json = {
+        question: questions[randomQuestion],
+      };
+
+      res.send(json);
     }
 
     async answerQuestion(req, res) {
+      let require = Object.assign({}, req);
+      let response = Object.assign({}, res);
+      let gameId = req.params.gameId;
       let question = await Game.getAnswer(req.body.questionId, req.body.answer);
-      if (question) {
-        res.send('Correcto');
+      let userId = await Game.getIdOf('game_user_id', gameId);
+      let rivalId = await Game.getIdOf('rival_id', gameId);
+      var turn = await Game.getTurn(gameId);
+      if (turn < 10) {
+        if (question) {
+          if ( turn % 2 == 0) {
+            Game.updatePoints(gameId, userId, 10);
+          } else {
+            Game.updatePoints(gameId, rivalId, 10);
+          }
+        }
+        await Game.sumTurn(gameId);
       } else {
-        res.send('Incorecto');
+        res.redirect(`results/${gameId}`);
       }
+      res.redirect(`${gameId}`);
+      setTimeout(this.showGame, 5000, require, response);
+    }
+
+    async createGame(req, res) {
+      var max = await Game.getMax('category', 'questions');
+      const maxValue = Object.values(max[0]);
+      var random = Math.floor(Math.random() * maxValue) + 1;
+      let game = await Game.createGame(req.body.userId, req.body.rivalId, random);
+      let gameId = Object.values(game[0]);
+      res.redirect(`${gameId}`);
+    }
+
+    async results(req, res) {
+      let game = await Game.get(req.params.gameId);
+      res.send(game);
     }
 }
 

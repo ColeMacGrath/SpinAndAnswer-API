@@ -17,8 +17,7 @@ class QuestionCtrl {
             data: data,
             total_count: data.length,
       };
-
-        // In case user was not found
+      
       if (data.length === 0) {
             res.status(204);
       }

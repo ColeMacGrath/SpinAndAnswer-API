@@ -21,13 +21,10 @@ router.post('/', (req, res, next) => {
     });
 }, questionCtrl.create);
 
-
-// Question approval
 router.patch('/:questionId', questionCtrl.changeActive);
 
 router.patch('/change/:questionId', questionCtrl.changeCategory);
 
-// Edit question
 router.put('/:questionId', questionCtrl.modify);
 
 module.exports = router;
