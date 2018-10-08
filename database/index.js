@@ -3,11 +3,11 @@ const mysql = require('mysql');
 class Database {
     constructor() {
         this.connection = mysql.createConnection({
-            host: process.env.DB_HOST,
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            database: process.env.DB_NAME,
-            socketPath: process.env.SOCKET_PATH,
+            host: 'localhost',
+            user: 'root',
+            password: 'root',
+            database: 'spinandanswer',
+            socketPath: '/Applications/MAMP/tmp/mysql/mysql.sock',
         });
 
         this.connection.connect((error) => {

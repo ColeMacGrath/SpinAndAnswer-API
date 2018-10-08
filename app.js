@@ -7,4 +7,4 @@ const router = require('./routes');
 
 app.use(router);
 
-app.listen(process.env.DB_PORT, () => console.log('running'));
+app.listen(3000, () => console.log('running'));
