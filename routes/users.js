@@ -22,14 +22,11 @@ router.post('/', (req, res, next) => {
 
 router.put('/:userId', usersCtrl.modify);
 
-// FRIENDS
-router.get('/friends/:friendId', usersCtrl.getFriend);
-
 router.get('/:userId/friends', usersCtrl.getAllFriends);
 
 router.post('/friends/', usersCtrl.addFriend);
 
-router.delete('/friends/:friendId', usersCtrl.modifyFriendship);
+router.delete('/:userId/friends/', usersCtrl.modifyFriendship);
 
 router.patch('/friends/', usersCtrl.acceptFriend);
 

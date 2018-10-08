@@ -20,7 +20,6 @@ class GameCtrl {
         total_count: data.length,
       };
 
-      // In case user was not found
       if (data.length === 0) {
         res.status(204);
       }
@@ -93,12 +92,20 @@ class GameCtrl {
     }
 
     async createGame(req, res) {
-      var max = await Game.getMax('category', 'questions');
-      const maxValue = Object.values(max[0]);
-      var random = Math.floor(Math.random() * maxValue) + 1;
-      let game = await Game.createGame(req.body.userId, req.body.rivalId, random);
-      let gameId = Object.values(game[0]);
-      res.redirect(`${gameId}`);
+      if (await Game.exists(req.body.userId, req.body.rivalId)) {
+        if (!(req.body.userId == req.body.rivalId)) {
+          var max = await Game.getMax('category', 'questions');
+          const maxValue = Object.values(max[0]);
+          var random = Math.floor(Math.random() * maxValue) + 1;
+          let game = await Game.createGame(req.body.userId, req.body.rivalId, random);
+          let gameId = Object.values(game[0]);
+          res.redirect(`${gameId}`);
+        } else {
+          res.status(400).send('Cannot play with yourself, go and make friends');
+        }
+      } else {
+        res.status(404).send('User not found');
+      }
     }
 
     async results(req, res) {

@@ -105,6 +105,20 @@ class Game {
       let game = await database.getGameResults(gameId);
       return game;
     }
+
+    static async exists(userId, rivalId) {
+      var exists = false;
+      const user = await database.singleSelect('users', userId);
+      const rival = await database.singleSelect('users', rivalId);
+      if (user.length && rival.length) {
+        if (user[0].active && rival[0].active) {
+          exists = true;
+        }
+      } else {
+        console.log('ELSE');
+      }
+      return exists;
+    }
 }
 
 module.exports = Game;

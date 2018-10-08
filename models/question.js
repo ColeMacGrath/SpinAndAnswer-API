@@ -26,13 +26,14 @@ class Question {
         return data;
     }
 
-    static async create({ category, question, correct_answer, answerOne, answerTwo, answerThree }) {
-        const response = await database.insert('questions', { category, question, correct_answer, answerOne, answerTwo, answerThree });
-        const id = response.insertId;
-        if (id >  0) {
-            return new Question({ id, category, question, correct_answer, answerOne, answerTwo, answerThree }) ;
-        }
-        return [];
+    static async create({category, question, correct_answer, answer_one, answer_two, answer_three}){
+      let response = await database.insert('questions', {category, question, correct_answer, answer_one, answer_two, answer_three});
+
+      const id = response.insertId;
+      if (id > 0){
+        return new Question({id, category, question, correct_answer, answer_one, answer_two, answer_three});
+      }
+      return [];
     }
 
     static async changeActive(questionId) {
@@ -45,8 +46,8 @@ class Question {
         return data;
     }
 
-    static async modify(questionId, { category, question, correct_answer, answerOne, answerTwo, answerThree }) {
-        const data = await database.update('questions', questionId, { category, question, correct_answer, answerOne, answerTwo, answerThree } );
+    static async modify(questionId, {category, question, correct_answer, answer_one, answer_two, answer_three}) {
+        const data = await database.update('questions', questionId, {category, question, correct_answer, answer_one, answer_two, answer_three} );
         return data;
     }
 }

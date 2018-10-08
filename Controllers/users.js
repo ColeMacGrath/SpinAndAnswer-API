@@ -7,7 +7,6 @@ class UserCtrl {
         this.create = this.create.bind(this);
         this.delete = this.changeActive.bind(this);
         this.modify = this.modify.bind(this);
-        this.getFriend = this.getFriend.bind(this);
         this.getAllFriends = this.getAllFriends.bind(this);
         this.addFriend = this.addFriend.bind(this);
         this.modifyFriendship = this.modifyFriendship.bind(this);
@@ -32,15 +31,6 @@ class UserCtrl {
 
     async get(req, res) {
       let data = await User.get(req.params.userId);
-      if (data.length === 0) {
-        res.status(404);
-      }
-
-      res.send(data);
-    }
-
-    async getFriend(req, res) {
-      let data = await User.getFriend(req.params.friendId);
       if (data.length === 0) {
         res.status(404);
       }
@@ -83,21 +73,33 @@ class UserCtrl {
     }
 
     async modifyFriendship(req, res) {
-      let data = await User.modifyFriendship(req.body.userId, req.params.friendId);
-      res.status(201).send(data);
-    }
-
-    async addFriend(req, res, next) {
-      let data = await User.addFriend(req.body.userId, req.body.friendId);
-      console.log(data.length);
-      if (data.length === 0) {
-          res.status(404).send(data);
+      let data = await User.modifyFriendship(req.params.userId, req.body.friendId);
+      console.log(data.affectedRows);
+      if (!data.affectedRows) {
+        res.status(404).send(data);
       }
       res.status(201).send(data);
     }
 
+    async addFriend(req, res, next) {
+      let friend = await User.get(req.body.friendId);
+       if (friend[0].active) {
+         let data = await User.addFriend(req.body.userId, req.body.friendId);
+         if (data.length === 0) {
+           res.status(404).send(data);
+         } else {
+           res.status(201).send(data);
+         }
+       } else {
+         res.status(404).send('User not found');
+       }
+    }
+
     async acceptFriend(req, res, next) {
       let data = await User.modifyFriendship(req.body.userId, req.body.friendId);
+      if (!data.affectedRows) {
+        res.status(404).send(data);
+      }
       res.status(201).send(data);
     }
 }

@@ -25,11 +25,6 @@ class User {
         return data;
     }
 
-    static async getFriend(friendId) {
-      const data = await database.singleSelect('users', friendId);
-      return data;
-    }
-
     static async changeActive(userId) {
         const data = await database.changeActive('users', userId);
         return data;
@@ -52,13 +47,13 @@ class User {
 
     static async addFriend(userId, friendId) {
       const friends = await database.checkFriendship(userId, friendId);
-      if (friends.length === 0) {
-        const data = await database.insertFriend(userId, friendId);
-        return data;
-      } else {
-        const data = [];
-        return data;
-      }
+      if (friends.length === 0 && !(userId === friendId)) {
+          const data = await database.insertFriend(userId, friendId);
+          return data;
+        } else {
+          const data = [];
+          return data;
+        }
     }
 
     static async modifyFriendship(userId, friendId) {

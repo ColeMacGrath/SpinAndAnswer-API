@@ -17,7 +17,7 @@ class QuestionCtrl {
             data: data,
             total_count: data.length,
       };
-      
+
       if (data.length === 0) {
             res.status(204);
       }
@@ -44,7 +44,7 @@ class QuestionCtrl {
       if (data.changedRows === 0) {
         res.status(404);
       }
-      res.send(data);
+      res.status(200).send(data);
     }
 
     async changeCategory(req, res) {
@@ -57,7 +57,10 @@ class QuestionCtrl {
 
     async modify(req, res, next) {
       let data = await Question.modify(req.params.questionId, req.body);
-      res.status(201).send(data);
+        if (data.affectedRows === 0) {
+          res.status(404);
+        }
+        res.send(data);
     }
 }
 
