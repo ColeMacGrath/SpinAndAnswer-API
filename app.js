@@ -5,6 +5,8 @@ const app = express();
 
 const router = require('./routes');
 
-app.use(router);
+// app.use(router);
 
-app.listen(process.env.DB_PORT, () => console.log('running'));
+app.send('hola');
+
+// app.listen(process.env.DB_PORT, () => console.log('running'));
