@@ -90,7 +90,6 @@ class GameCtrl {
         res.redirect(`results/${gameId}`);
       }
       res.redirect(`${gameId}`);
-      setTimeout(this.showGame, 5000, require, response);
     }
 
     async createGame(req, res) {
