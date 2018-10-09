@@ -2,17 +2,22 @@ const router = require('express').Router();
 const { gameCtrl } = require('../controllers');
 const userMiddleware = require('../middlewares');
 
-//Se crea el juego con los ID de jugadores
+// Create a game with the players' id
 router.post('/choose', gameCtrl.createGame);
-//Se entrega la pregunta al jugador
+
+// Give the questions to the players
 router.get('/:gameId', gameCtrl.showGame);
-//Se obtiene la respuesta del jugador
+
+// Obtain the answer of the player
 router.post('/:gameId', gameCtrl.answerQuestion);
-//Se muestran todas las preguntas
+
+// Show all the questions
 router.get('/all', gameCtrl.getAll);
-//Se entregan todas las preguntas por categoría
+
+// Give all the questions by category
 router.get('/:categoryId', gameCtrl.getQuestionsOf);
-//Resultados de la partida
+
+// Show the results of the game
 router.get('/results/:gameId', gameCtrl.results);
 
 module.exports = router;
