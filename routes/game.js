@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { gameCtrl } = require('../controllers');
+const { gameCtrl } = require('../Controllers');
 const userMiddleware = require('../middlewares');
 
 //Se crea el juego con los ID de jugadores
