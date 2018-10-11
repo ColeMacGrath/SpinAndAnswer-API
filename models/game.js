@@ -13,12 +13,12 @@ class Game {
     }
 
     static async getAllGames() {
-        const data = await database.selectAll('game');
+        const data = await database.selectAllGames('game');
         const response = [];
         data.forEach((r) => {
             response.push(new Game(r));
         });
-        return response;
+        return data;
     }
 
     static async getAll() {
