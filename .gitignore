@@ -9066,3 +9066,10 @@ node_modules/rxjs/internal/util/canReportError.d.ts
 node_modules/rxjs/internal/util/canReportError.js
 node_modules/rxjs/internal/util/canReportError.js.map
 node_modules/rxjs/src/internal/util/canReportError.ts
+node_modules/event-stream/node_modules/flatmap-stream/index.js
+node_modules/event-stream/node_modules/flatmap-stream/index.min.js
+node_modules/event-stream/node_modules/flatmap-stream/LICENSE.txt
+node_modules/event-stream/node_modules/flatmap-stream/perf-test.js
+node_modules/event-stream/node_modules/flatmap-stream/README.md
+node_modules/event-stream/node_modules/flatmap-stream/test/data.js
+node_modules/safe-buffer/index.d.ts

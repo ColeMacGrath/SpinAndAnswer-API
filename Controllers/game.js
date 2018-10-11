@@ -13,7 +13,7 @@ class GameCtrl {
     }
 
     async getAll(req, res) {
-      let data = await Game.getAll();
+      let data = await Game.getAllGames();
 
       const json = {
         data: data,
