@@ -1,4 +1,7 @@
 # SpinAndAnswer-API
+## WIKI
+https://github.com/ColeMacGrath/SpinAndAnswer-API/wiki
+
 El juego consistirá en una ruleta la cuál hará diferentes preguntas enfocadas al área informática
 - Usuarios ganan puntos en cada juego
 - Ruleta que define tematica
