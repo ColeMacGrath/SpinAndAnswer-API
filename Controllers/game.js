@@ -64,7 +64,6 @@ class GameCtrl {
       const json = {
         question: questions[randomQuestion],
       };
-
       res.send(json);
     }
 
