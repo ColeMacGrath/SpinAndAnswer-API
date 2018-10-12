@@ -13,6 +13,12 @@ class UserCtrl {
         this.acceptFriend = this.acceptFriend.bind(this);
     }
 
+    /**
+     * Gets every users in database
+     * @param  {[require]}  req [Input]
+     * @param  {[response]}  res [Response a JSON with users]
+     * @return {Promise}     [return every user in JSON]
+     */
     async getAll(req, res) {
       let data = await User.getAll();
 
@@ -21,7 +27,6 @@ class UserCtrl {
         total_count: data.length,
       };
 
-      // In case user was not found
       if (data.length === 0) {
         res.status(204);
       }
@@ -29,6 +34,12 @@ class UserCtrl {
       res.send(json);
     }
 
+    /**
+     * Gets a single user
+     * @param  {[require]}  req [Input (ID of user)]
+     * @param  {[response]}  res [send a user in JSON]
+     * @return {Promise}     [return a user in JSON]
+     */
     async get(req, res) {
       let data = await User.get(req.params.userId);
       if (data.length === 0) {
@@ -38,6 +49,13 @@ class UserCtrl {
       res.send(data);
     }
 
+    /**
+     * [Gets every user who's friend of a specific one]
+     * @param  {[require]}  req [Input (ID of user)]
+     * @param  {[response]}  res [send a JSON with al user's friends]
+     * @return {Promise}     [return a JSON with users (friends)]
+     */
+
     async getAllFriends(req, res) {
       let data = await User.selectAllFriends(req.params.userId);
       const json = {
@@ -45,7 +63,6 @@ class UserCtrl {
         total_count: data.length,
       };
 
-      // In case user was not found
       if (data.length === 0) {
         res.status(404);
       }
@@ -54,6 +71,12 @@ class UserCtrl {
     }
 
     //Logical delete
+    /**
+     * Deletes logically a specific user
+     * @param  {[type]}  req [Input (ID of users to be deleted)]
+     * @param  {[type]}  res [Response]
+     * @return {Promise}     [change status of specific users from active to inactive]
+     */
     async changeActive(req, res) {
       let data = await User.changeActive(req.params.userId);
       if (data.changedRows === 0) {
@@ -62,16 +85,33 @@ class UserCtrl {
       res.send(data);
     }
 
+    /**
+     * Creates a new user and inserts into a database
+     * @param  {[require]}   req  [Input (new user's info)]
+     * @param  {[response]}   res  [Response]
+     * @return {Promise}       [return a status with new user`s data]
+     */
     async create(req, res, next) {
       let data = await User.create(req.body);
       res.status(201).send(data);
     }
 
+    /**
+     * Calls modify method
+     * @param  {[type]}   req  [Input (new info)]
+     * @param  {[type]}   res  [return a status with new user`s info]
+     */
     async modify(req, res, next) {
       let data = await User.modify(req.params.userId, req.body);
       res.status(201).send(data);
     }
 
+    /**
+     * Modifies friendship status between two users
+     * @param  {[require]}  req [Input (ID of user and friend)]
+     * @param  {[response]}  res [send a status with data]
+     * @return {Promise}     [return a data of modified user]
+     */
     async modifyFriendship(req, res) {
       let data = await User.modifyFriendship(req.params.userId, req.body.friendId);
       console.log(data.affectedRows);
@@ -81,6 +121,12 @@ class UserCtrl {
       res.status(201).send(data);
     }
 
+    /**
+     * Send a request of friendship
+     * @param  {[require]}   req  [Input (ID of user and ID of new friend)]
+     * @param  {[response]}   res  [Response with status and data]
+     * @return {Promise}       [return modified data]
+     */
     async addFriend(req, res, next) {
       let friend = await User.get(req.body.friendId);
        if (friend[0].active) {
@@ -95,6 +141,12 @@ class UserCtrl {
        }
     }
 
+    /**
+     * Changes status of pending to accepted in a friendship request
+     * @param  {[require]}   req  [Input (ID of user and new Friend)]
+     * @param  {[response]}   res  [Reponse with status and data]
+     * @return {Promise}       [return modified data]
+     */
     async acceptFriend(req, res, next) {
       let data = await User.modifyFriendship(req.body.userId, req.body.friendId);
       if (!data.affectedRows) {
