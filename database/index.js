@@ -53,6 +53,22 @@ class Database {
     }
 
     /**
+     * Gets a single active token from the table
+     * @param  {[Int]} id    [ID of token in table]
+     * @return {[Resolve]}       [return every element that meets the criteria]
+     */
+    selectActiveToken(id){
+        let tableRow = table.substring(0, table.length - 1);
+        tableRow = tableRow.concat('_id');
+        return new Promise((resolve, reject) => {
+            this.connection.query(`SELECT * FROM tokens WHERE ${tableRow} = ? AND active = 1`, [id], (error, results) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+   }
+
+    /**
      * Changes active status
      * @param  {[Stirng]} table [table of element to be updated]
      * @param  {[Int]} id    [ID of element to be updated]
