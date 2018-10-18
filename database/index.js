@@ -23,8 +23,8 @@ class Database {
 
     /**
      * Get every record of a table
-     * @param  {[String]} table [new of a table to be queried]
-     * @return {[resolve]}       [return every result]
+     * @param  {String} table [new of a table to be queried]
+     * @return {resolve}       [return every result]
      */
     selectAll(table) {
         return new Promise((resolve, reject) => {
@@ -37,9 +37,9 @@ class Database {
 
     /**
      * Gets a single recor of a table
-     * @param  {[String]} table [name of table to be queried]
-     * @param  {[Int]} id    [ID of element in table]
-     * @return {[Resolve]}       [return every element that meets the criteria]
+     * @param  {String} table [name of table to be queried]
+     * @param  {Int} id    [ID of element in table]
+     * @return {Resolve}       [return every element that meets the criteria]
      */
     singleSelect(table, id) {
         let tableRow = table.substring(0, table.length - 1);
@@ -53,15 +53,29 @@ class Database {
     }
 
     /**
+     * Gets a user from the table using his username and password
+     * @param  {String} usern    [username of user in table]
+     * @param  {String} pass    [password of user in table]
+     * @return {Resolve}       [return every element that meets the criteria]
+     */
+    selectByUserAndPass(usern, pass){
+        return new Promise((resolve, reject) => {
+          let sql = `SELECT * FROM users WHERE username = '${usern}' AND password = '${pass}'`;
+            this.connection.query(sql, (error, results) => {
+                if (error) return reject(error);
+                return resolve(results);
+            });
+        });
+   }
+
+    /**
      * Gets a single active token from the table
-     * @param  {[Int]} id    [ID of token in table]
-     * @return {[Resolve]}       [return every element that meets the criteria]
+     * @param  {Int} id    [ID of token in table]
+     * @return {Resolve}       [return every element that meets the criteria]
      */
     selectActiveToken(id){
-        let tableRow = table.substring(0, table.length - 1);
-        tableRow = tableRow.concat('_id');
         return new Promise((resolve, reject) => {
-            this.connection.query(`SELECT * FROM tokens WHERE ${tableRow} = ? AND active = 1`, [id], (error, results) => {
+            this.connection.query(`SELECT * FROM tokens WHERE user_id = ? AND active = 1`, [id], (error, results) => {
                 if (error) return reject(error);
                 return resolve(results);
             });
@@ -70,9 +84,9 @@ class Database {
 
     /**
      * Changes active status
-     * @param  {[Stirng]} table [table of element to be updated]
-     * @param  {[Int]} id    [ID of element to be updated]
-     * @return {[Resolve]}       [Return results of query]
+     * @param  {String} table [table of element to be updated]
+     * @param  {Int} id    [ID of element to be updated]
+     * @return {Resolve}       [Return results of query]
      */
     changeActive(table, id) {
         let tableRow = table.substring(0, table.length - 1);
@@ -87,12 +101,13 @@ class Database {
 
     /**
      * Inserts a element into the database
-     * @param  {[String]} table    [Name of table to be updated]
-     * @param  {[Array]} resource [elements to be added]
-     * @return {[Resolve]}          [return results of query]
+     * @param  {String} table    [Name of table to be updated]
+     * @param  {Array} resource [elements to be added]
+     * @return {Resolve}          [return results of query]
      */
     insert(table, resource) {
         return new Promise((resolve, reject) => {
+          console.log(resource);
           this.connection.query('INSERT INTO ?? SET ?', [table, resource], (error, results) => {
             if (error) return reject(error);
             return resolve(results);
@@ -103,9 +118,9 @@ class Database {
 
     /**
      * Updates elements into a table
-     * @param  {[String]} table    [name of table to be updated]
-     * @param  {[Int]} id       [ID of element to be modfied]
-     * @param  {[Resolve]} resource [Data of element]
+     * @param  {String} table    [name of table to be updated]
+     * @param  {Int} id       [ID of element to be modfied]
+     * @param  {Resolve} resource [Data of element]
 ]
      */
     update(table, id, resource) {
@@ -118,10 +133,10 @@ class Database {
 
     /**
      * Changes category of a question
-     * @param  {[String]} table    [table to be updated]
-     * @param  {[Int]} id       [ID of question to be modified]
-     * @param  {[String]} category [New question's category]
-     * @return {[Resolve]}          [Return results of query]
+     * @param  {String} table    [table to be updated]
+     * @param  {Int} id       [ID of question to be modified]
+     * @param  {String} category [New question's category]
+     * @return {Resolve}          [Return results of query]
      */
     changeCategory(table, id, category) {
         return new Promise((resolve, reject) => {
@@ -134,9 +149,9 @@ class Database {
 
     /**
      * Changes status of friends
-     * @param  {[Int]} userId   [ID of user]
-     * @param  {[Int]} friendId [ID of friend]
-     * @return {[Resolve]}          [Return results of query]
+     * @param  {Int} userId   [ID of user]
+     * @param  {Int} friendId [ID of friend]
+     * @return {Resolve}          [Return results of query]
      */
     changeStatus(userId, friendId) {
         return new Promise((resolve, reject) => {
@@ -149,8 +164,8 @@ class Database {
 
     /**
      * Get frindId where User match with cirteria
-     * @param  {[Int]} userId [ID of user of has a friend]
-     * @return {[Resolve]}        [return results of query]
+     * @param  {Int} userId [ID of user of has a friend]
+     * @return {Resolve}        [return results of query]
      */
     getFriendsId(userId) {
         return new Promise((resolve, reject) => {
@@ -163,9 +178,9 @@ class Database {
 
     /**
      * Create a new friendship
-     * @param  {[Int]} userId   [ID of user]
-     * @param  {[Int]} friendId [ID of new user's friend]
-     * @return {[Resolve]}          [return results of query]
+     * @param  {Int} userId   [ID of user]
+     * @param  {Int} friendId [ID of new user's friend]
+     * @return {Resolve}          [return results of query]
      */
     insertFriend(userId, friendId) {
         return new Promise((resolve, reject) => {
@@ -178,9 +193,9 @@ class Database {
 
     /**
      * Checks if existis a friendship between a user and other user
-     * @param  {[Int]} userId   [ID of user]
-     * @param  {[Int]} friendId [ID of possible friend]
-     * @return {[Resolve]}          [return results of query (if empty users are not friends)]
+     * @param  {Int} userId   [ID of user]
+     * @param  {Int} friendId [ID of possible friend]
+     * @return {Resolve}          [return results of query (if empty users are not friends)]
      */
     checkFriendship(userId, friendId) {
         return new Promise((resolve, reject) => {
@@ -193,7 +208,7 @@ class Database {
 
     /**
      * Gets every single question in database
-     * @return {[Resolve]} [return every question founded]
+     * @return {Resolve} [return every question founded]
      */
     selectAllQuestions() {
         return new Promise((resolve, reject) => {
@@ -206,9 +221,9 @@ class Database {
 
     /**
      * Gests quetions from to (In a range)
-     * @param  {[Int]} from [beginning of range]
-     * @param  {[Int]} to   [End of range]
-     * @return {[Resolve]}      [return every result that meets the criteria]
+     * @param  {Int} from [beginning of range]
+     * @param  {Int} to   [End of range]
+     * @return {Resolve}      [return every result that meets the criteria]
      */
     getQuestions(from, to) {
         return new Promise((resolve, reject) => {
@@ -221,8 +236,8 @@ class Database {
 
     /**
      * Gets questions of same category
-     * @param  {[Int]} categoryId [ID of category]
-     * @return {[Resolve]}            [Return every result that meets the criteria]
+     * @param  {Int} categoryId [ID of category]
+     * @return {Resolve}            [Return every result that meets the criteria]
      */
     getQuestionsOf(categoryId) {
       return new Promise((resolve, reject) => {
@@ -235,9 +250,9 @@ class Database {
 
     /**
      * Get quantity of data in a colum
-     * @param  {[String]} column [name of column]
-     * @param  {[String]} table  [name of table]
-     * @return {[Resolve]}        [Return every result that meets the criteria]
+     * @param  {String} column [name of column]
+     * @param  {String} table  [name of table]
+     * @return {Resolve}        [Return every result that meets the criteria]
      */
     getMax(column, table) {
       return new Promise((resolve, reject) => {
@@ -250,10 +265,10 @@ class Database {
 
     /**
      * [Creates a game with some parameters]
-     * @param  {[Int]} userId   [ID of user]
-     * @param  {[Int]} rivalId  [ID of rival]
-     * @param  {[String]} category [Topic of game]
-     * @return {[Resolve]}          [return a created Game]
+     * @param  {Int} userId   [ID of user]
+     * @param  {Int} rivalId  [ID of rival]
+     * @param  {String} category [Topic of game]
+     * @return {Resolve}          [return a created Game]
      */
     createGame(userId, rivalId, category) {
       return new Promise((resolve, reject) => {
@@ -266,8 +281,8 @@ class Database {
 
     /**
      * Gets category of game
-     * @param  {[Int]} gameId [ID of game to be queried]
-     * @return {[Resolve]}        [return category of game]
+     * @param  {Int} gameId [ID of game to be queried]
+     * @return {Resolve}        [return category of game]
      */
     getCategory(gameId) {
       return new Promise((resolve, reject) => {
@@ -280,8 +295,8 @@ class Database {
 
     /**
      * get actual turn of game
-     * @param  {[Int]} gameId [ID of game]
-     * @return {[Resolve]}        [return actual turn if game existis]
+     * @param  {Int} gameId [ID of game]
+     * @return {Resolve}        [return actual turn if game existis]
      */
     getTurn(gameId) {
       return new Promise((resolve, reject) => {
@@ -294,8 +309,8 @@ class Database {
 
     /**
      * Add one in a turn
-     * @param  {[Int]} gameId [ID of game]
-     * @return {[Resolve]}        [return a results upadated]
+     * @param  {Int} gameId [ID of game]
+     * @return {Resolve}        [return a results upadated]
      */
     sumTurn(gameId) {
       return new Promise((resolve, reject) => {
@@ -308,10 +323,10 @@ class Database {
 
     /**
      * Adds points for a user
-     * @param  {[Int]} gameId  [ID of game]
-     * @param  {[Int]} user_id [ID of user who won points]
-     * @param  {[Int]} points  [Quantity of points to be added]
-     * @return {[Resolve]}         [Return data updated]
+     * @param  {Int} gameId  [ID of game]
+     * @param  {Int} user_id [ID of user who won points]
+     * @param  {Int} points  [Quantity of points to be added]
+     * @return {Resolve}         [Return data updated]
      */
     updatePoints(gameId, user_id, points) {
       return new Promise((resolve, reject) => {
@@ -324,9 +339,9 @@ class Database {
 
     /**
      * Gets ID
-     * @param  {[Int]} colum  [description]
-     * @param  {[Int]} gameId [description]
-     * @return {[Resolve]}        [description]
+     * @param  {Int} colum  [description]
+     * @param  {Int} gameId [description]
+     * @return {Resolve}        [description]
      */
     getIdOf(colum, gameId) {
       return new Promise((resolve, reject) => {
@@ -339,8 +354,8 @@ class Database {
 
     /**
      * Show results of a specific game
-     * @param  {[Int]} gameId [ID of game]
-     * @return {[Resolve]}        [Return results of a game]
+     * @param  {Int} gameId [ID of game]
+     * @return {Resolve}        [Return results of a game]
      */
     getGameResults(gameId) {
       return new Promise((resolve, reject) => {
@@ -353,8 +368,8 @@ class Database {
 
     /**
      * Gets every data of a specific table in database
-     * @param  {[String]} table [name of table]
-     * @return {[Resolve]}       [return results]
+     * @param  {String} table [name of table]
+     * @return {Resolve}       [return results]
      */
     selectAllGames(table) {
         return new Promise((resolve, reject) => {
@@ -367,7 +382,7 @@ class Database {
 
     /**
      * disconnects of database
-     * @return {[connection]} [description]
+     * @return {connection} [description]
      */
     disconnect() {
         this.connection.end();
@@ -375,7 +390,7 @@ class Database {
 
     /**
      * Destroy connection of database
-     * @return {[connection]} [description]
+     * @return {connection} [description]
      */
     destroy() {
         this.connection.destroy();

@@ -26,7 +26,7 @@ class User {
 
     /**
      * Get a single user
-     * @param  {[Int]}  userId [ID of user to get]
+     * @param  {Int}  userId [ID of user to get]
      * @return {Promise}        [Return user in JSON data]
      */
     static async get(userId) {
@@ -34,9 +34,14 @@ class User {
         return data;
     }
 
+    static async getByUserAndPass(usern, pass) {
+        const data = await database.selectByUserAndPass(usern, pass);
+        return data;
+    }
+
     /**
      * Change status of user
-     * @param  {[Int]}  userId [ID of user to be changed]
+     * @param  {Int}  userId [ID of user to be changed]
      * @return {Promise}        [return modified data in JSON]
      */
     static async changeActive(userId) {
@@ -46,10 +51,10 @@ class User {
 
     /**
      * Creates a new user
-     * @param  {[String]}  name     [name of new user]
-     * @param  {[String]}  mail     [mail of new user]
-     * @param  {[String]}  username [username of new user]
-     * @param  {[String]}  password [password of new user]
+     * @param  {String}  name     [name of new user]
+     * @param  {String}  mail     [mail of new user]
+     * @param  {String}  username [username of new user]
+     * @param  {String}  password [password of new user]
      * @return {Promise}          [return a new user]
      */
     static async create({name, mail, username, password}){
@@ -64,13 +69,13 @@ class User {
 
     /**
      * Modifies an existent user
-     * @param  {[Int]}  userId   [Int]
-     * @param  {[String]}  name     [String]
-     * @param  {[String]}  mail     [String]
-     * @param  {[String]}  username [String]
-     * @param  {[String]}  password [String]
-     * @param  {[Int]}  admin    [Int]
-     * @param  {[Int]}  active   [Int]
+     * @param  {Int}  userId   [Int]
+     * @param  {String}  name     [String]
+     * @param  {String}  mail     [String]
+     * @param  {String}  username [String]
+     * @param  {String}  password [String]
+     * @param  {Int}  admin    [Int]
+     * @param  {Int}  active   [Int]
      * @return {Promise}          [Return modified data]
      */
     static async modify(userId, { name, mail, username, password, admin, active }) {
@@ -80,8 +85,8 @@ class User {
 
     /**
      * Adds new friend
-     * @param  {[Int]}  userId   [ID of user who request]
-     * @param  {[Int]}  friendId [ID of new friend]
+     * @param  {Int}  userId   [ID of user who request]
+     * @param  {Int}  friendId [ID of new friend]
      * @return {Promise}          [return results if a friend exists]
      */
     static async addFriend(userId, friendId) {
@@ -97,8 +102,8 @@ class User {
 
     /**
      * Changes friendship status
-     * @param  {[Int]}  userId   [ID of user]
-     * @param  {[Int]}  friendId [ID of friend]
+     * @param  {Int}  userId   [ID of user]
+     * @param  {Int}  friendId [ID of friend]
      * @return {Promise}          [return modified data]
      */
     static async modifyFriendship(userId, friendId) {
@@ -109,7 +114,7 @@ class User {
 
     /**
      * Gets every friend of friend of user
-     * @param  {[Int]}  userId [ID of user who has friends]
+     * @param  {Int}  userId [ID of user who has friends]
      * @return {Promise}        [users in JSON]
      */
     static async selectAllFriends(userId) {

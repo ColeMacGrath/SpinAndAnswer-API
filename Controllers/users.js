@@ -15,8 +15,8 @@ class UserCtrl {
 
     /**
      * Gets every users in database
-     * @param  {[require]}  req [Input]
-     * @param  {[response]}  res [Response a JSON with users]
+     * @param  {request}  req [Input]
+     * @param  {response}  res [Response a JSON with users]
      * @return {Promise}     [return every user in JSON]
      */
     async getAll(req, res) {
@@ -36,8 +36,8 @@ class UserCtrl {
 
     /**
      * Gets a single user
-     * @param  {[require]}  req [Input (ID of user)]
-     * @param  {[response]}  res [send a user in JSON]
+     * @param  {request}  req [Input (ID of user)]
+     * @param  {response}  res [send a user in JSON]
      * @return {Promise}     [return a user in JSON]
      */
     async get(req, res) {
@@ -51,8 +51,8 @@ class UserCtrl {
 
     /**
      * [Gets every user who's friend of a specific one]
-     * @param  {[require]}  req [Input (ID of user)]
-     * @param  {[response]}  res [send a JSON with al user's friends]
+     * @param  {request}  req [Input (ID of user)]
+     * @param  {response}  res [send a JSON with al user's friends]
      * @return {Promise}     [return a JSON with users (friends)]
      */
 
@@ -73,8 +73,8 @@ class UserCtrl {
     //Logical delete
     /**
      * Deletes logically a specific user
-     * @param  {[type]}  req [Input (ID of users to be deleted)]
-     * @param  {[type]}  res [Response]
+     * @param  {type}  req [Input (ID of users to be deleted)]
+     * @param  {type}  res [Response]
      * @return {Promise}     [change status of specific users from active to inactive]
      */
     async changeActive(req, res) {
@@ -87,8 +87,8 @@ class UserCtrl {
 
     /**
      * Creates a new user and inserts into a database
-     * @param  {[require]}   req  [Input (new user's info)]
-     * @param  {[response]}   res  [Response]
+     * @param  {request}   req  [Input (new user's info)]
+     * @param  {response}   res  [Response]
      * @return {Promise}       [return a status with new user`s data]
      */
     async create(req, res, next) {
@@ -98,8 +98,8 @@ class UserCtrl {
 
     /**
      * Calls modify method
-     * @param  {[type]}   req  [Input (new info)]
-     * @param  {[type]}   res  [return a status with new user`s info]
+     * @param  {type}   req  [Input (new info)]
+     * @param  {type}   res  [return a status with new user`s info]
      */
     async modify(req, res, next) {
       let data = await User.modify(req.params.userId, req.body);
@@ -108,8 +108,8 @@ class UserCtrl {
 
     /**
      * Modifies friendship status between two users
-     * @param  {[require]}  req [Input (ID of user and friend)]
-     * @param  {[response]}  res [send a status with data]
+     * @param  {request}  req [Input (ID of user and friend)]
+     * @param  {response}  res [send a status with data]
      * @return {Promise}     [return a data of modified user]
      */
     async modifyFriendship(req, res) {
@@ -123,8 +123,8 @@ class UserCtrl {
 
     /**
      * Send a request of friendship
-     * @param  {[require]}   req  [Input (ID of user and ID of new friend)]
-     * @param  {[response]}   res  [Response with status and data]
+     * @param  {request}   req  [Input (ID of user and ID of new friend)]
+     * @param  {response}   res  [Response with status and data]
      * @return {Promise}       [return modified data]
      */
     async addFriend(req, res, next) {
@@ -143,8 +143,8 @@ class UserCtrl {
 
     /**
      * Changes status of pending to accepted in a friendship request
-     * @param  {[require]}   req  [Input (ID of user and new Friend)]
-     * @param  {[response]}   res  [Reponse with status and data]
+     * @param  {request}   req  [Input (ID of user and new Friend)]
+     * @param  {response}   res  [Reponse with status and data]
      * @return {Promise}       [return modified data]
      */
     async acceptFriend(req, res, next) {

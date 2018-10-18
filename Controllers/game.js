@@ -14,8 +14,8 @@ class GameCtrl {
 
     /**
      * Request every game in database
-     * @param  {[require]}  req [Input]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input]
+     * @param  {response}  res [Response]
      * @return {Promise}     [Return a JSON with all games]
      */
     async getAll(req, res) {
@@ -35,8 +35,8 @@ class GameCtrl {
 
     /**
      * [Get every question in database]
-     * @param  {[require]}  req [Input]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input]
+     * @param  {response}  res [Response]
      * @return {Promise}     [return a JSON with all questions]
      */
     async getQuestions(req, res) {
@@ -55,8 +55,8 @@ class GameCtrl {
 
     /**
      * Get every question with same category
-     * @param  {[require]}  req [Input (ID of category)]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input (ID of category)]
+     * @param  {response}  res [Response]
      * @return {Promise}     [return a JSON with all questions of same category]
      */
     async getQuestionsOf(req, res) {
@@ -75,8 +75,8 @@ class GameCtrl {
 
     /**
      * Show a random question in game
-     * @param  {[require]}  req [Input (ID of game)]
-     * @param  {[response]}  res [response]
+     * @param  {request}  req [Input (ID of game)]
+     * @param  {response}  res [response]
      * @return {Promise}     [return a JSON with a random question]
      */
     async showGame(req, res) {
@@ -94,8 +94,8 @@ class GameCtrl {
 
     /**
      * Get, determine and update information when a question is answered
-     * @param  {[require]}  req [Input (ID of question and answer in string)]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input (ID of question and answer in string)]
+     * @param  {response}  res [Response]
      * @return {Promise}     [Redirect for another question]
      */
     async answerQuestion(req, res) {
@@ -135,8 +135,8 @@ class GameCtrl {
 
     /**
      * Creates a new game in database
-     * @param  {[require]}  req [Input (ID of user and ID of rival)]
-     * @param  {[response]}  res [respobse]
+     * @param  {request}  req [Input (ID of user and ID of rival)]
+     * @param  {response}  res [respobse]
      * @return {Promise}     [Send status according to the situation]
      */
     async createGame(req, res) {
@@ -166,8 +166,8 @@ class GameCtrl {
 
     /**
      * Gets results of a specific game
-     * @param  {[require]}  req [Input (ID of game)]
-     * @param  {[response]}  res [response]
+     * @param  {request}  req [Input (ID of game)]
+     * @param  {response}  res [response]
      * @return {Promise}     [return a game info]
      */
     async results(req, res) {

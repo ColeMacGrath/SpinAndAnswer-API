@@ -36,8 +36,8 @@ class Game {
 
     /**
      * Get all questions form n to n
-     * @param  {[Int]}  from [where does the questions start to be listed]
-     * @param  {[Int]}  to   [where does the questions finishes to be listed]
+     * @param  {Int}  from [where does the questions start to be listed]
+     * @param  {Int}  to   [where does the questions finishes to be listed]
      * @return {Promise}      [return all questions in rage from to]
      */
     static async getQuestions(from, to) {
@@ -47,7 +47,7 @@ class Game {
 
     /**
      * Get every questions with same category
-     * @param  {[Int]}  categoryId [category in number format]
+     * @param  {Int}  categoryId [category in number format]
      * @return {Promise}            [return a JSON of questions with same category]
      */
     static async getQuestionsOf(categoryId) {
@@ -57,9 +57,9 @@ class Game {
 
     /**
      * Create a new game in database
-     * @param  {[Int]}  userId   [user who wants to start a game]
-     * @param  {[Int]}  rivalID  [a rival of original user who is supposed to play]
-     * @param  {[Int]}  category [number of category of game (topic)]
+     * @param  {Int}  userId   [user who wants to start a game]
+     * @param  {Int}  rivalID  [a rival of original user who is supposed to play]
+     * @param  {Int}  category [number of category of game (topic)]
      * @return {Promise}          [return all new game information]
      */
     static async createGame(userId, rivalID, category) {
@@ -69,8 +69,8 @@ class Game {
 
     /**
      * Get max quantity of things in a table
-     * @param  {[String]}  column [Colum of the table to search]
-     * @param  {[String]}  table  [table wich contains information to count]
+     * @param  {String}  column [Colum of the table to search]
+     * @param  {String}  table  [table wich contains information to count]
      * @return {Promise}        [description]
      */
     static async getMax(column, table) {
@@ -80,7 +80,7 @@ class Game {
 
     /**
      * Get a random question of a category
-     * @param  {[String]}  table [category to search and get a randm question]
+     * @param  {String}  table [category to search and get a randm question]
      * @return {Promise}       [return a random question]
      */
     static async getRandomQuestion(table) {
@@ -103,8 +103,8 @@ class Game {
 
     /**
      * Get an answer for a qeustion
-     * @param  {[Int]}  questionId [ID of question]
-     * @param  {[String]}  answer     [Answer to be checked]
+     * @param  {Int}  questionId [ID of question]
+     * @param  {String}  answer     [Answer to be checked]
      * @return {Promise}            [return a result]
      */
     static async getAnswer(questionId, answer) {
@@ -119,7 +119,7 @@ class Game {
 
     /**
      * Get a category of a specific game
-     * @param  {[Int]}  gameId [ID of game to get the category]
+     * @param  {Int}  gameId [ID of game to get the category]
      * @return {Promise}        [return the category of the game]
      */
     static async getCategory(gameId) {
@@ -130,7 +130,7 @@ class Game {
 
     /**
      * Gets the specific turn of game, it means who's next to answer
-     * @param  {[Int]}  gameId [ID of game to determine turn]
+     * @param  {Int}  gameId [ID of game to determine turn]
      * @return {Promise}        [return a turn in number]
      */
     static async getTurn(gameId) {
@@ -141,7 +141,7 @@ class Game {
 
     /**
      * Adds a single turn in a turn column
-     * @param  {[Int]}  gameId [ID of game for add a turn]
+     * @param  {Int}  gameId [ID of game for add a turn]
      * @return {Promise}        [return a modified table info]
      */
     static async sumTurn(gameId) {
@@ -150,8 +150,8 @@ class Game {
 
     /**
      * Gets ID of user
-     * @param  {[String]}  colum  [colum to search]
-     * @param  {[Int]}  gameId [gameId wich contains the table]
+     * @param  {String}  colum  [colum to search]
+     * @param  {Int}  gameId [gameId wich contains the table]
      * @return {Promise}        [description]
      */
     static async getIdOf(colum, gameId) {
@@ -162,9 +162,9 @@ class Game {
 
     /**
      * Updates points when a user answer correctly
-     * @param  {[Int]}  gameId [ID of game in progress]
-     * @param  {[Int]}  userId [ID of user who answer]
-     * @param  {[Int]}  points [Quantity of points to sum]
+     * @param  {Int}  gameId [ID of game in progress]
+     * @param  {Int}  userId [ID of user who answer]
+     * @param  {Int}  points [Quantity of points to sum]
      * @return {Promise}        [return a modified data]
      */
     static async updatePoints(gameId, userId, points) {
@@ -174,7 +174,7 @@ class Game {
 
     /**
      * Get a single specific game
-     * @param  {[Int]}  gameId [ID of game to consult]
+     * @param  {Int}  gameId [ID of game to consult]
      * @return {Promise}        [return a game]
      */
     static async get(gameId) {
@@ -184,8 +184,8 @@ class Game {
 
     /**
      * Verifies if user and rival exists
-     * @param  {[Int]}  userId  [User who wants to play]
-     * @param  {[Int]}  rivalId [Oponent of user]
+     * @param  {Int}  userId  [User who wants to play]
+     * @param  {Int}  rivalId [Oponent of user]
      * @return {Promise}         [return true if both existis, false if one or both doesn't exist]
      */
     static async exists(userId, rivalId) {

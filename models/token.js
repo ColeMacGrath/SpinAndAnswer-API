@@ -1,8 +1,8 @@
 const database = require('../database');
 
 class Token {
-    constructor(tokenId, user_id, created_at, active, expires, type) {
-        this.tokenId = tokenId;
+    constructor(id, user_id, created_at, active, expires, type) {
+        this.id = id;
         this.user_id = user_id;
         this.created_at = created_at;
         this.active = active;
@@ -10,23 +10,31 @@ class Token {
         this.type = type;
     }
 
-    static async create({created_at, user_id, active, expires, type}){
-      let response = await database.insert('tokens', {user_id, created_at, active, expires, type});
+    /**
+     * Creates a new token
+     * @param  {Int}  user_id     [Id from the user who created the token]
+     * @param  {Date}  created_at     [When was created the token]
+     * @param  {Int}  expires [Time when the token will expire]
+     * @param {Char} type [Type of token]
+     * @return {Promise}          [return a new token]
+     */
+    static async create(user_id, expires, type){
+      let response = await database.insert('tokens', {user_id, expires , type});
 
       const id = response.insertId;
       if (id > 0){
-        return new Token({user_id, created_at, active, expires, type});
+        return new Token({user_id, type});
       }
       return [];
     }
-
-    static async modify(tokenId, {user_id, created_at, active, expires, type}) {
-        const data = await database.update('tokens', tokenId, {user_id, created_at, active, expires, type});
-        return data;
-    }
-
-    static async getActive(tokenId) {
-        const data = await database.selectActiveToken(tokenId);
+    /**
+     *
+     * Gets an active token
+     * @param {Int} tokenId [Id from the token]
+     * @return {Promise}
+     */
+    static async getActive(userId) {
+        const data = await database.selectActiveToken(userId);
         return data;
     }
 

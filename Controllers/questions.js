@@ -12,8 +12,8 @@ class QuestionCtrl {
 
     /**
      * Gets every question in JSON format
-     * @param  {[require]}  req [Input]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input]
+     * @param  {response}  res [Response]
      * @return {Promise}     [Return a JSON with info]
      */
     async getAll(req, res) {
@@ -33,8 +33,8 @@ class QuestionCtrl {
 
     /**
      * Get a single question
-     * @param  {[require]}  req [Input (ID of question)]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input (ID of question)]
+     * @param  {response}  res [Response]
      * @return {Promise}     [Return a single question, if doesnt existis return a 404 status error]
      */
     async get(req, res) {
@@ -48,8 +48,8 @@ class QuestionCtrl {
 
     /**
      * Creates new question
-     * @param  {[require]}   req  [Input (Question Info)]
-     * @param  {[response]}   res  [Response]
+     * @param  {request}   req  [Input (Question Info)]
+     * @param  {response}   res  [Response]
      * @return {Promise}       [Return data with a 201 message]
      */
     async create(req, res, next) {
@@ -59,8 +59,8 @@ class QuestionCtrl {
 
     /**
      * Changes status of question (aproved of rejected)
-     * @param  {[require]}  req [Input (ID of question)]
-     * @param  {[response]}  res [Response]
+     * @param  {request}  req [Input (ID of question)]
+     * @param  {response}  res [Response]
      * @return {Promise}     [Return a 200 status if was changed, 404 if it was not located]
      */
     async changeActive(req, res) {
@@ -73,8 +73,8 @@ class QuestionCtrl {
 
     /**
      * Changes category of a specific question
-     * @param  {[require]}  req [Input]
-     * @param  {[response]}  res [Reponse]
+     * @param  {request}  req [Input]
+     * @param  {response}  res [Reponse]
      * @return {Promise}     [Return a 404 status if category wasnt changed, if not return question data]
      */
     async changeCategory(req, res) {
@@ -87,8 +87,8 @@ class QuestionCtrl {
 
     /**
      * Modifies every single parameter of question
-     * @param  {[require]}   req  [Input (Question ID and question Information)]
-     * @param  {[response]}   res  [Response]
+     * @param  {request}   req  [Input (Question ID and question Information)]
+     * @param  {response}   res  [Response]
      * @return {Promise}       [return 404 status if questions wasnt located, if was located return question data]
      */
     async modify(req, res, next) {
