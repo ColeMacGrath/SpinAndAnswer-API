@@ -13,7 +13,6 @@ class Token {
     /**
      * Creates a new token
      * @param  {Int}  user_id     [Id from the user who created the token]
-     * @param  {Date}  created_at     [When was created the token]
      * @param  {Int}  expires [Time when the token will expire]
      * @param {Char} type [Type of token]
      * @return {Promise}          [return a new token]
@@ -30,7 +29,7 @@ class Token {
     /**
      *
      * Gets an active token
-     * @param {Int} tokenId [Id from the token]
+     * @param {Int} userId [Id from the user]
      * @return {Promise}
      */
     static async getActive(userId) {

@@ -36,7 +36,7 @@ class TokenCtrl {
      * @return {Promise}     [Return a 200 status if was changed, 404 if it was not located]
      */
     async changeTokenStatus(req, res) {
-      let data = await Question.changeActive(req.params.questionId);
+      let data = await Token.changeActive(req.params.tokenId);
       if (data.changedRows === 0) {
         res.status(404);
       }
