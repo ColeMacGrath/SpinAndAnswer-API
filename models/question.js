@@ -58,7 +58,6 @@ class Question {
     static async create({category, question, correct_answer, answer_one, answer_two, answer_three, question_user_id}){
       try {
         let response = await database.insert('questions', {category, question, correct_answer, answer_one, answer_two, answer_three, question_user_id});
-
         const id = response.insertId;
         if (id > 0){
           return new Question({id, category, question, correct_answer, answer_one, answer_two, answer_three, question_user_id});

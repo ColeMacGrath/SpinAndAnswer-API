@@ -55,9 +55,9 @@ class QuestionCtrl {
     async create(req, res, next) {
       let data = await Question.create(req.body);
       if (data){
-        res.status(400).send('Question not created')
+        res.status(201).send('Question created');
       }
-      res.status(201).send('Question created');
+      res.status(400).send('Question not created')
     }
 
     /**

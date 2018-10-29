@@ -29,6 +29,6 @@ router.patch('/reset', usersCtrl.resetPassword);
 //Reset password
 router.patch('/reset/:tokenId', auth.haveSession, usersCtrl.changePassword);
 
-router.get('/:userId/friendshipRequest', usersCtrl.friendshipRequest);
+router.get('/:userId/friendshipRequest', auth.haveSession, usersCtrl.friendshipRequest);
 
 module.exports = router;
