@@ -4,3 +4,5 @@ exports.User = require('./user');
 exports.Question = require('./question');
 //Exports game operations
 exports.Game = require('./game');
+
+exports.Token = require('./token');

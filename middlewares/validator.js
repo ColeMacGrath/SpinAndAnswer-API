@@ -21,8 +21,8 @@ class Validator {
   static validate(req, res, next, rules) {
     const error = {
       message: 'Validation Error',
-      status: 409,
-      details: {},
+      status: res.status(409),
+      details: res.send('Invalid data'),
     };
 
     for (let part in rules) {
