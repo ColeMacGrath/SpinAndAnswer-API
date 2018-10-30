@@ -1,4 +1,9 @@
 const { User } = require('../models');
+const { auth } = require('../middlewares');
+const { Token } = require('../models');
+const mailer = require('../mail');
+const bcrypt = require('bcryptjs');
+const loginMiddleWare = require('../middlewares');
 
 class UserCtrl {
     constructor() {
@@ -13,12 +18,6 @@ class UserCtrl {
         this.acceptFriend = this.acceptFriend.bind(this);
     }
 
-    /**
-     * Gets every users in database
-     * @param  {request}  req [Input]
-     * @param  {response}  res [Response a JSON with users]
-     * @return {Promise}     [return every user in JSON]
-     */
     async getAll(req, res) {
       let data = await User.getAll();
 
@@ -27,34 +26,22 @@ class UserCtrl {
         total_count: data.length,
       };
 
+      // In case user was not found
       if (data.length === 0) {
-        res.status(204);
+        res.status(404).send('Users not found');
       }
 
-      res.send(json);
+      res.status(200).send(json);
     }
 
-    /**
-     * Gets a single user
-     * @param  {request}  req [Input (ID of user)]
-     * @param  {response}  res [send a user in JSON]
-     * @return {Promise}     [return a user in JSON]
-     */
     async get(req, res) {
       let data = await User.get(req.params.userId);
       if (data.length === 0) {
-        res.status(404);
+        res.status(404).send('User not found');
       }
 
-      res.send(data);
+      res.status(200).send(data);
     }
-
-    /**
-     * [Gets every user who's friend of a specific one]
-     * @param  {request}  req [Input (ID of user)]
-     * @param  {response}  res [send a JSON with al user's friends]
-     * @return {Promise}     [return a JSON with users (friends)]
-     */
 
     async getAllFriends(req, res) {
       let data = await User.selectAllFriends(req.params.userId);
@@ -63,96 +50,156 @@ class UserCtrl {
         total_count: data.length,
       };
 
+      // In case user was not found
       if (data.length === 0) {
-        res.status(404);
+        res.status(404).send('User not found');
       }
 
-      res.send(json);
+      res.status(200).send(json);
     }
 
     //Logical delete
-    /**
-     * Deletes logically a specific user
-     * @param  {type}  req [Input (ID of users to be deleted)]
-     * @param  {type}  res [Response]
-     * @return {Promise}     [change status of specific users from active to inactive]
-     */
     async changeActive(req, res) {
       let data = await User.changeActive(req.params.userId);
       if (data.changedRows === 0) {
-        res.status(404);
+        res.status(409).send('Could not change the status');
       }
-      res.send(data);
+      res.status(200).send('Status changed');
     }
 
-    /**
-     * Creates a new user and inserts into a database
-     * @param  {request}   req  [Input (new user's info)]
-     * @param  {response}   res  [Response]
-     * @return {Promise}       [return a status with new user`s data]
-     */
     async create(req, res, next) {
       let data = await User.create(req.body);
-      res.status(201).send(data);
+      if (data.length === 0) {
+        res.status(404).send('Could not create user');
+      }
+      loginMiddleWare.auth.register(req, res, next);
+      UserCtrl.sendMail(data.id.mail, 'Welcome to SpinAndAnswer!');
+      res.status(201).send('User created');
     }
 
-    /**
-     * Calls modify method
-     * @param  {type}   req  [Input (new info)]
-     * @param  {type}   res  [return a status with new user`s info]
-     */
     async modify(req, res, next) {
       let data = await User.modify(req.params.userId, req.body);
-      res.status(201).send(data);
+      if (data.affectedRows) {
+        res.status(201).send('User modified');
+      } else {
+        res.status(404).send('Could not modify user');
+      }
     }
 
-    /**
-     * Modifies friendship status between two users
-     * @param  {request}  req [Input (ID of user and friend)]
-     * @param  {response}  res [send a status with data]
-     * @return {Promise}     [return a data of modified user]
-     */
     async modifyFriendship(req, res) {
       let data = await User.modifyFriendship(req.params.userId, req.body.friendId);
-      console.log(data.affectedRows);
       if (!data.affectedRows) {
-        res.status(404).send(data);
+        res.status(404).send('Could not change frienship');
       }
-      res.status(201).send(data);
+      res.status(201).send('Frienship situation changed');
     }
 
-    /**
-     * Send a request of friendship
-     * @param  {request}   req  [Input (ID of user and ID of new friend)]
-     * @param  {response}   res  [Response with status and data]
-     * @return {Promise}       [return modified data]
-     */
     async addFriend(req, res, next) {
       let friend = await User.get(req.body.friendId);
-       if (friend[0].active) {
-         let data = await User.addFriend(req.body.userId, req.body.friendId);
-         if (data.length === 0) {
-           res.status(404).send(data);
-         } else {
-           res.status(201).send(data);
-         }
-       } else {
-         res.status(404).send('User not found');
-       }
+      if (friend) {
+        if (friend.id[0].active) {
+          let data = await User.addFriend(req.body.userId, req.body.friendId);
+          if (data.length === 0) {
+            res.status(404).send('Request already sent');
+          } else {
+            res.status(200).send('Resquest sent');
+          }
+        } else {
+          res.status(404).send('User not found');
+        }
+      } else {
+        res.status(404).send('User not found');
+      }
     }
 
-    /**
-     * Changes status of pending to accepted in a friendship request
-     * @param  {request}   req  [Input (ID of user and new Friend)]
-     * @param  {response}   res  [Reponse with status and data]
-     * @return {Promise}       [return modified data]
-     */
     async acceptFriend(req, res, next) {
       let data = await User.modifyFriendship(req.body.userId, req.body.friendId);
       if (!data.affectedRows) {
-        res.status(404).send(data);
+        res.status(404).send('Imposible to accept request');
+      }
+      res.status(201).send('Friend added');
+    }
+
+    async getQuestionsBy(req, res, next) {
+      let data = await User.getQuestionsBy(req.params.userId);
+      if (!data.affectedRows) {
+        res.status(404).send('Could not get questions');
       }
       res.status(201).send(data);
+    }
+
+    async login(req, res, next) {
+      let data = await User.getBy(req.body.mail, req.body.password);
+      if (data.length === 0) {
+        res.status(404).send('User not found');
+      }
+      res.status(200).send('Logged in');
+    }
+
+    async logout(req, res, next) {
+      let token = await auth.getToken(req);
+      if (token) {
+        let change = await Token.changeActive(token.id[0].token_id);
+        if (change.affectedRows) {
+          res.status(200).send('User disconnected successfully');
+        } else {
+          res.status(409).send('The user could not be disconnected');
+        }
+      } else {
+        res.status(403).send('User not logged in');
+      }
+    }
+
+    async changePassword(req, res, next) {
+      let password = req.body.password;
+      let tokenId = req.params.tokenId;
+      let token = await Token.getTokenBy(tokenId);
+      let userId = token.id[0].user_id;
+      password = bcrypt.hashSync(String(password));
+      try {
+        let change = await Token.changeActive(token.id[0].token_id);
+        if (change.affectedRows) {
+          await User.modifyPassword(userId, password);
+          res.status(200).send('Password changed successfully');
+        } else {
+          res.status(400).send('Password could not be changed');
+        }
+      } catch (e) {
+        res.status(400).send('Could not change password');
+        throw e;
+      }
+    }
+
+    async resetPassword(req, res, next) {
+      let mail = req.body.mail;
+      let user = await User.getBy(mail);
+      if (user) {
+        await Token.create(user.id[0].user_id, 'r', process.env.RESET_EXPIRES);
+        let token = await Token.get(user.id[0].user_id, 'r', 1);
+        let url = 'http://localhost:3000/users/reset/' + token.id[0].token_id;
+        console.log(JSON.stringify(token.id[0]));
+        UserCtrl.sendMail(user.id[0].mail, url);
+        res.status(200).send('Message sent');
+      } else {
+        res.status(500).send('Could not sent message');
+      }
+    }
+
+    static async sendMail(mail, message) {
+      let mailOptions = {
+           to: mail,
+           subject: 'Register Completed',
+           html: `<b>${message}</b>`,
+       };
+      mailer.sendMail(mailOptions);
+    }
+
+    async friendshipRequest(req, res, next){
+      let data = await User.getFriendshipRequest(req.params.userId);
+      if (data.length == 0){
+        res.status(404).send('You do not have any friends request')
+      }
+      res.status(200).send(data);
     }
 }
 
