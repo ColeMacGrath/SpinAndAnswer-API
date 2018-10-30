@@ -65,14 +65,35 @@ class Auth {
         next();
       } else {
         next({
-          status: 403,
+          status: res.status(403),
           message: res.send('Invalid Session'),
         });
       }
     } else {
       next({
-        status: 403,
+        status: res.status(403),
         message: res.send('Invalid Session'),
+      });
+    }
+  }
+
+  static async canCheck(req, res, next) {
+    const token = await Auth.getToken(req);
+    if (token) {
+      const active = await Auth.isActive(token.id[0]);
+      const userId = token.id[0].user_id;
+      if (active && userId == req.params.userId) {
+        next();
+      } else {
+        next({
+          status: res.status(403),
+          message: res.send('You are not allowed'),
+        });
+      }
+    } else {
+      next({
+        status: res.status(403),
+        message: res.send('You are not allowed'),
       });
     }
   }
@@ -86,7 +107,7 @@ class Auth {
         next();
     } else {
       next({
-        status: 403,
+        status: res.status(403),
         message: res.send('You must have permissions... Sale bye'),
       });
     }
