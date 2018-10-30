@@ -1,3 +1,4 @@
+node_modules
 node_modules/.bin/mime
 node_modules/accepts/HISTORY.md
 node_modules/accepts/index.js
