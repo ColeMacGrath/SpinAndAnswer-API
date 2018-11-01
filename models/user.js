@@ -69,14 +69,15 @@ class User {
     static async create({name, mail, username, password, second_mail}){
       password = bcrypt.hashSync(String(password));
       try {
+        console.log('ENTRò');
         let response = await database.insert('users', {name, mail, username, password, second_mail});
-
+        console.log('Insertado');
         const id = response.insertId;
         if (id > 0){
           return new User({id, name, mail, username, password, second_mail});
         }
-        return [];
       } catch (e) {
+        return [];
         throw e;
       }
     }

@@ -2,6 +2,9 @@ const router = require('express').Router();
 const { usersCtrl } = require('../Controllers');
 const registerMiddleWare = require('../middlewares');
 const { auth } = require('../middlewares');
+const multer  = require('multer');
+const fs  = require('fs');
+const upload = multer({ dest: 'upload/'});
 // Obtain all the active users
 router.get('/', [auth.haveSession, auth.havePermissions], usersCtrl.getAll);
 //Obtain a specific user by its id
@@ -28,5 +31,18 @@ router.patch('/reset', usersCtrl.resetPassword);
 router.patch('/reset/:tokenId', auth.haveSession, usersCtrl.changePassword);
 
 router.get('/:userId/friendshipRequest', [auth.haveSession, auth.canCheck], usersCtrl.friendshipRequest);
+
+router.post('/upload', upload.single('picture'), (req, res, next) => {
+  console.log(req.body);
+  console.log(req.file);
+  fs.rename(req.file.path, `uploads/file-${req.file.filename}`, (err) => {
+  if (err) throw err;
+    console.log('Rename complete!');
+  });
+  next();
+  res.send('finished');
+}, (req, res) => {
+  res.send('Uploading');
+});
 
 module.exports = router;
