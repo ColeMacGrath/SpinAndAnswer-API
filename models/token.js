@@ -1,19 +1,20 @@
 const database = require('../database');
 
 class Token {
-  constructor(id, userId, createdAt, expires, type, active) {
+  constructor(id, userId, createdAt, expires, type, active, token) {
     this.id = id;
     this.userId = userId;
     this.createdAt = createdAt;
     this.expires = expires;
     this.type = type;
     this.active = active;
+    this.token = token;
   }
 
-  static async create(user_id, type, expires) {
+  static async create(user_id, type, expires, token) {
     try {
-      let data = await database.insert('tokens',{user_id, type, expires});
-      return new Token({user_id, type, expires});
+      let data = await database.insert('tokens',{user_id, type, expires, token});
+      return new Token({user_id, type, expires, token});
     } catch (e) {
       throw e;
     }
@@ -21,7 +22,7 @@ class Token {
 
   static async changeActive(tokenId) {
     try {
-      let data = await database.changeActive('tokens', tokenId);
+      let data = await database.update('tokens', `active = 0 WHERE token_id = ${tokenId}`);
       return data;
     } catch (e) {
       throw e;
@@ -31,22 +32,21 @@ class Token {
 
   static async get(userId, type, active) {
     try {
-      let data = await database.getToken(userId, type, active);
+      let data = await database.select('*', 'tokens', `WHERE user_id = ${userId} AND type = '${type}' AND active = ${active}`);
       return data.length !== 0 ? new Token (data) : false;
     } catch (e) {
       throw e;
     }
   }
 
-  static async getTokenBy(id) {
+  static async getTokenBy(tokenHash) {
     try {
-      let data = await database.singleSelect('tokens', id);
+      let data = await database.select('*', 'tokens', `WHERE token = '${tokenHash}'`);
       return data.length !== 0 ? new Token (data) : false;
     } catch (e) {
       throw e;
     }
   }
-
 }
 
 module.exports = Token;

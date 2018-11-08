@@ -36,7 +36,7 @@ class UserCtrl {
 
     async get(req, res) {
       let data = await User.get(req.params.userId);
-      if (data.length === 0) {
+      if (!data) {
         res.status(404).send('User not found');
       }
 
@@ -50,9 +50,8 @@ class UserCtrl {
         total_count: data.length,
       };
 
-      // In case user was not found
       if (data.length === 0) {
-        res.status(404).send('User not found');
+        res.status(404).send('You are a loner, find some friends  ');
       }
 
       res.status(200).send(json);
@@ -74,13 +73,12 @@ class UserCtrl {
       }
       loginMiddleWare.auth.register(req, res, next);
       UserCtrl.sendMail(data.id.mail, 'Welcome to SpinAndAnswer!');
-      res.status(201).send('User created');
     }
 
     async modify(req, res, next) {
       let data = await User.modify(req.params.userId, req.body);
       if (data.affectedRows) {
-        res.status(201).send('User modified');
+        res.status(200).send('User modified');
       } else {
         res.status(404).send('Could not modify user');
       }
@@ -91,7 +89,7 @@ class UserCtrl {
       if (!data.affectedRows) {
         res.status(404).send('Could not change frienship');
       }
-      res.status(201).send('Frienship situation changed');
+      res.status(200).send('Frienship situation changed');
     }
 
     async addFriend(req, res, next) {
@@ -99,7 +97,7 @@ class UserCtrl {
       if (friend) {
         if (friend.id[0].active) {
           let data = await User.addFriend(req.body.userId, req.body.friendId);
-          if (data.length === 0) {
+          if (!data) {
             res.status(404).send('Request already sent');
           } else {
             res.status(200).send('Resquest sent');
@@ -117,15 +115,15 @@ class UserCtrl {
       if (!data.affectedRows) {
         res.status(404).send('Imposible to accept request');
       }
-      res.status(201).send('Friend added');
+      res.status(200).send('Friend added');
     }
 
     async getQuestionsBy(req, res, next) {
       let data = await User.getQuestionsBy(req.params.userId);
-      if (!data.affectedRows) {
+      if (!data) {
         res.status(404).send('Could not get questions');
       }
-      res.status(201).send(data);
+      res.status(200).send(data);
     }
 
     async login(req, res, next) {
@@ -176,8 +174,7 @@ class UserCtrl {
       if (user) {
         await Token.create(user.id[0].user_id, 'r', process.env.RESET_EXPIRES);
         let token = await Token.get(user.id[0].user_id, 'r', 1);
-        let url = 'http://localhost:3000/users/reset/' + token.id[0].token_id;
-        console.log(JSON.stringify(token.id[0]));
+        let url = 'https://spinandanswer.herokuapp.com/users/reset/' + token.id[0].token_id;
         UserCtrl.sendMail(user.id[0].mail, url);
         res.status(200).send('Message sent');
       } else {

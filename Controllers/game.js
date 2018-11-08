@@ -14,9 +14,9 @@ class GameCtrl {
 
     /**
      * Request every game in database
-     * @param   request   req [Input]
-     * @param   response   res [Response]
-     * @return Promise     [Return a JSON with all games]
+     * @param   request   req Input
+     * @param   response   res Response
+     * @return Promise     Return a JSON with all games
      */
     async getAll(req, res, next) {
       try {
@@ -40,10 +40,10 @@ class GameCtrl {
     }
 
     /**
-     * [Get every question in database]
-     * @param   request   req [Input]
-     * @param   response   res [Response]
-     * @return Promise     [return a JSON with all questions]
+     * Get every question in database
+     * @param   request   req Input
+     * @param   response   res Response
+     * @return Promise     return a JSON with all questions
      */
     async getQuestions(req, res, next) {
       try {
@@ -66,9 +66,9 @@ class GameCtrl {
 
     /**
      * Get every question with same category
-     * @param   request   req [Input (ID of category)]
-     * @param   response   res [Response]
-     * @return Promise     [return a JSON with all questions of same category]
+     * @param   request   req Input (ID of category)
+     * @param   response   res Response
+     * @return Promise     return a JSON with all questions of same category
      */
     async getQuestionsOf(req, res, next) {
       try {
@@ -89,9 +89,9 @@ class GameCtrl {
 
     /**
      * Show a random question in game
-     * @param   request   req [Input (ID of game)]
-     * @param   response   res [response]
-     * @return Promise     [return a JSON with a random question]
+     * @param   request    req Input (ID of game)
+     * @param   response   res response
+     * @return Promise     return a JSON with a random question
      */
     async showGame(req, res, next) {
       let gameId = req.params.gameId;
@@ -110,9 +110,9 @@ class GameCtrl {
 
     /**
      * Get, determine and update information when a question is answered
-     * @param   request   req [Input (ID of question and answer in string)]
-     * @param   response   res [Response]
-     * @return Promise     [Redirect for another question]
+     * @param   request    req Input (ID of question and answer in string)
+     * @param   response   res Response
+     * @return  Promise    Redirect for another question
      */
     async answerQuestion(req, res) {
       //ID of game
@@ -134,13 +134,13 @@ class GameCtrl {
             Game.updatePoints(gameId, userId, process.env.POINTS);
             //If is odd rival answered
           } else {
-            Game.updatePoints(gameId, rivalId, process.env.POºS);
+            Game.updatePoints(gameId, rivalId, process.env.POINTS);
           }
         }
         //Sum a turn
         await Game.sumTurn(gameId);
       } else {
-        //If turn is more than ten redirects to results screen
+        //If turn is more than ten turns redirects to results screen
         res.redirect(`results/${gameId}`);
       }
       //Return to game and show other question
@@ -149,9 +149,9 @@ class GameCtrl {
 
     /**
      * Creates a new game in database
-     * @param   request   req [Input (ID of user and ID of rival)]
-     * @param   response   res [respobse]
-     * @return Promise     [Send status according to the situation]
+     * @param   request   req Input (ID of user and ID of rival)
+     * @param   response  res respobse
+     * @return  Promise   Send status according to the situation
      */
     async createGame(req, res, next) {
       try {
@@ -166,7 +166,9 @@ class GameCtrl {
             var random = Math.floor(Math.random() * maxValue) + 1;
             //Creates a geme with both users and a random caegory
             let game = await Game.createGame(req.body.userId, req.body.rivalId, random);
-            let gameId = Object.values(game[0]);
+            //Gets last game created
+            var gameId = await Game.getMax('game_id', 'game');
+            gameId =  Object.values(gameId[0]);
             //Redirects to a game screen
             res.redirect(`play/${gameId}`);
           } else {
@@ -184,11 +186,11 @@ class GameCtrl {
 
     /**
      * Gets results of a specific game
-     * @param   request   req [Input (ID of game)]
-     * @param   response   res [response]
-     * @return Promise     [return a game info]
+     * @param   request   req Input (ID of game)
+     * @param   response  res response
+     * @return  Promise   return a game info
      */
-    async results(req, res) {
+    async results(req, res, next) {
       try {
         let game = await Game.get(req.params.gameId);
         res.status(200).send(game);
