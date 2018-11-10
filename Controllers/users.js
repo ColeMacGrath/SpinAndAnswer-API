@@ -51,7 +51,7 @@ class UserCtrl {
       };
 
       if (data.length === 0) {
-        res.status(404).send('You are a loner, find some friends  ');
+        res.status(404).send('You are a loner, find some friends');
       }
 
       res.status(200).send(json);
@@ -72,14 +72,21 @@ class UserCtrl {
         res.status(404).send('Could not create user');
       }
       loginMiddleWare.auth.register(req, res, next);
-      UserCtrl.sendMail(data.id.mail, 'Welcome to SpinAndAnswer!');
+      UserCtrl.sendMail('Welcome to SpinAndAnswer!', data.id.mail, 'Enjoy');
     }
 
     async modify(req, res, next) {
-      let data = await User.modify(req.params.userId, req.body);
-      if (data.affectedRows) {
-        res.status(200).send('User modified');
-      } else {
+      try {
+        let data = await User.modify(req.params.userId, req.body);
+        let token = await auth.getToken(req);
+        let user = await User.get(token.id[0].user_id);
+        if (data.affectedRows) {
+          UserCtrl.sendMail('SpinAndAnswer Security Alert', user.id[0].mail, 'Your information has been updated');
+          res.status(200).send('User modified');
+        } else {
+          res.status(404).send('Could not modify user');
+        }
+      } catch (e) {
         res.status(404).send('Could not modify user');
       }
     }
@@ -96,7 +103,7 @@ class UserCtrl {
       let friend = await User.get(req.body.friendId);
       if (friend) {
         if (friend.id[0].active) {
-          let data = await User.addFriend(req.body.userId, req.body.friendId);
+          let data = await User.addFriend(req.params.userId, req.body.friendId);
           if (!data) {
             res.status(404).send('Request already sent');
           } else {
@@ -111,7 +118,7 @@ class UserCtrl {
     }
 
     async acceptFriend(req, res, next) {
-      let data = await User.modifyFriendship(req.body.userId, req.body.friendId);
+      let data = await User.modifyFriendship(req.params.userId, req.body.friendId);
       if (!data.affectedRows) {
         res.status(404).send('Imposible to accept request');
       }
@@ -152,40 +159,50 @@ class UserCtrl {
       let password = req.body.password;
       let tokenId = req.params.tokenId;
       let token = await Token.getTokenBy(tokenId);
-      let userId = token.id[0].user_id;
-      password = bcrypt.hashSync(String(password));
-      try {
-        let change = await Token.changeActive(token.id[0].token_id);
-        if (change.affectedRows) {
-          await User.modifyPassword(userId, password);
-          res.status(200).send('Password changed successfully');
+      if (token) {
+        if (token.id[0].active) {
+          let user = await User.get(token.id[0].user_id);
+          password = bcrypt.hashSync(String(password));
+          try {
+            let change = await Token.changeActive(token.id[0].token_id);
+            if (change.affectedRows) {
+              await User.modifyPassword(user.id[0].user_id, password);
+              UserCtrl.sendMail('SpinAndAnswer Security Alert', user.id[0].mail, 'Your password has been changed');
+              res.status(200).send('Password changed successfully');
+            } else {
+              res.status(400).send('Password could not be changed');
+            }
+          } catch (e) {
+            res.status(400).send('Could not change password');
+            throw e;
+          }
         } else {
-          res.status(400).send('Password could not be changed');
+          res.status(400).send('Invalid token');
         }
-      } catch (e) {
-        res.status(400).send('Could not change password');
-        throw e;
+      } else {
+        res.status(400).send('Invalid token');
       }
     }
 
     async resetPassword(req, res, next) {
       let mail = req.body.mail;
       let user = await User.getBy(mail);
+      let hash = bcrypt.hashSync(String(user.id));
       if (user) {
-        await Token.create(user.id[0].user_id, 'r', process.env.RESET_EXPIRES);
+        await Token.create(user.id[0].user_id, 'r', process.env.RESET_EXPIRES, hash);
         let token = await Token.get(user.id[0].user_id, 'r', 1);
-        let url = 'https://spinandanswer.herokuapp.com/users/reset/' + token.id[0].token_id;
-        UserCtrl.sendMail(user.id[0].mail, url);
+        let url = 'https://spinandanswer.herokuapp.com/users/reset/' + hash;
+        UserCtrl.sendMail('Reset your password', mail, url);
         res.status(200).send('Message sent');
       } else {
-        res.status(500).send('Could not sent message');
+        res.status(500).send('User not found');
       }
     }
 
-    static async sendMail(mail, message) {
+    static async sendMail(subject, mail, message) {
       let mailOptions = {
            to: mail,
-           subject: 'Register Completed',
+           subject: subject,
            html: `<b>${message}</b>`,
        };
       mailer.sendMail(mailOptions);

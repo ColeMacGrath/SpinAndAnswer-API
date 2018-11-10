@@ -1,5 +1,6 @@
 const { User } = require('../models');
 const { Token } = require('../models');
+const { Game } = require('../models');
 const bcrypt = require('bcryptjs');
 
 class Auth {
@@ -117,6 +118,21 @@ class Auth {
         message: res.send('You must have permissions... Sale bye'),
       });
     }
+  }
+
+  static async gameAllowed(req, res, next) {
+    const token = await Auth.getToken(req);
+    const game = await Game.get(req.params.gameId);
+    const userId = game[0].game_user_id;
+    if (token.id[0].user_id === userId) {
+      next();
+    } else {
+      next({
+        status: res.status(403),
+        message: res.send('You must have permissions... Sale bye'),
+      });
+    }
+
   }
 
   static getHeaderToken(bearer = '') {

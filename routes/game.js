@@ -14,10 +14,10 @@ router.post('/choose', [auth.haveSession, (req, res, next) => {
  }], gameCtrl.createGame);
 
 // Give the questions to the players
-router.get('/play/:gameId', auth.haveSession, gameCtrl.showGame);
+router.get('/play/:gameId', [auth.haveSession, auth.gameAllowed], gameCtrl.showGame);
 
 // Obtain the answer of the player
-router.post('/:gameId', [auth.haveSession, (req, res, next) => {
+router.post('/:gameId', [auth.haveSession, auth.gameAllowed, (req, res, next) => {
    middleware.validator.validate(req, res, next, {
      body: {
        gameId: 'number',
@@ -34,6 +34,6 @@ router.get('/all', [auth.haveSession, auth.havePermissions], gameCtrl.getAll);
 router.get('/:categoryId', auth.haveSession, gameCtrl.getQuestionsOf);
 
 // Show the results of the game
-router.get('/results/:gameId', auth.haveSession, gameCtrl.results);
+router.get('/results/:gameId', auth.haveSession, auth.gameAllowed, gameCtrl.results);
 
 module.exports = router;

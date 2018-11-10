@@ -42,7 +42,7 @@ router.put('/:userId', [auth.haveSession, auth.canCheck, (req, res, next) => {
 // Obtain all the friends of a specific user
 router.get('/:userId/friends', [auth.haveSession, auth.canCheck], usersCtrl.getAllFriends);
 // Create a new friend
-router.post('/friends/', [auth.haveSession, (req, res, next) => {
+router.post('/:userId/friends/', [auth.haveSession, auth.canCheck, (req, res, next) => {
    registerMiddleWare.validator.validate(req, res, next, {
      body: {
        userId: 'number,required',
@@ -59,7 +59,7 @@ router.delete('/:userId/friends/', [auth.haveSession, auth.canCheck, (req, res, 
    });
  }], usersCtrl.modifyFriendship);
 // Accept a friend request
-router.patch('/friends/', [auth.haveSession, (req, res, next) => {
+router.patch('/:userId/friends/', [auth.haveSession, auth.canCheck, (req, res, next) => {
    registerMiddleWare.validator.validate(req, res, next, {
      body: {
        userId: 'number,required',
@@ -76,13 +76,17 @@ router.patch('/reset', (req, res, next) => {
    });
  }, usersCtrl.resetPassword);
 //Reset password
-router.patch('/reset/:tokenId', [auth.haveSession, (req, res, next) => {
+router.patch('/reset/:tokenId', (req, res, next) => {
    registerMiddleWare.validator.validate(req, res, next, {
      body: {
        password: 'word,required',
      },
    });
- }], usersCtrl.changePassword);
+ }, usersCtrl.changePassword);
+
+ router.get('/reset/:tokenId', (req, res) => {
+   res.send('Send your password by patch');
+ });
 
 router.get('/:userId/friendshipRequest', [auth.haveSession, auth.canCheck], usersCtrl.friendshipRequest);
 

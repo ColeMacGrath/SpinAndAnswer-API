@@ -94,6 +94,7 @@ class User {
      * @return  Promise           Return modified data
      */
     static async modify(userId, { name, mail, username, password, second_mail, admin, active }) {
+      password = bcrypt.hashSync(String(password));
       try {
         const data = await database.update('users',
         `name = '${name}',
