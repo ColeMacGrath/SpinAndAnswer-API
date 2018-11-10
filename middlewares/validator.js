@@ -3,6 +3,7 @@ class Validator {
     return {
       word: /[a-zA-ZñÑ ]{3,}/,
       email: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+      number: /^([0-9])*$/,
     };
   }
 
@@ -10,8 +11,12 @@ class Validator {
     return (Validator.regex.word.test(data));
   }
 
+  static number(data) {
+    return (Validator.regex.number.test(data));
+  }
+
   static required(data) {
-    return data !== undefined && data !== null && data.length;
+    return String(data) !== undefined && String(data) !== null && String(data.length);
   }
 
   static email(data) {
@@ -21,8 +26,8 @@ class Validator {
   static validate(req, res, next, rules) {
     const error = {
       message: 'Validation Error',
-      status: res.status(409),
-      details: res.send('Invalid data'),
+      status: 409,
+      details: {},
     };
 
     for (let part in rules) {

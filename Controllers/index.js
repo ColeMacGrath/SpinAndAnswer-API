@@ -4,5 +4,3 @@ exports.usersCtrl = require('./users');
 exports.questionCtrl = require('./questions');
 //Exports game operations
 exports.gameCtrl = require('./game');
-
-exports.tokenCtrl = require('./token');

@@ -16,11 +16,11 @@ class Question {
 
     /**
      * Gets every question asking to datbase for them
-     * @return Promise [return an array of Questions (Object)]
+     * @return Promise return an array of Questions (Object)
      */
     static async getAll() {
       try {
-        const data = await database.selectAll('questions');
+        const data = await database.select('*', 'questions');
         const response = [];
         data.forEach((r) => {
           response.push(new Question(r));
@@ -33,12 +33,12 @@ class Question {
 
     /**
      * Get a single question
-     * @param   Integer   questionId [ID of question to consult]
-     * @return Promise            [return a JSON data with question information]
+     * @param   Integer   questionId ID of question to consult
+     * @return Promise    return a JSON data with question information
      */
     static async get(questionId) {
       try {
-        const data = await database.singleSelect('questions', questionId);
+        const data = await database.select('*', 'questions', `WHERE question_id = ${questionId }`);
         return data.length !== 0 ? new Question(data) : data;
       } catch (e) {
         throw e;
@@ -47,13 +47,13 @@ class Question {
 
     /**
      * Creates a new Questions object and insert it into database
-     * @param   Integer   category       [Category (topic) of question in Int format]
-     * @param   String   question       [String with the question]
-     * @param   String   correct_answer [String with the correct question]
-     * @param   String   answer_one     [String with an incorrect question]
-     * @param   String   answer_two     [String with an incorrect question]
-     * @param   String   answer_three   [String with an incorrect question]
-     * @return Promise                [Return a Question object and insert it into database
+     * @param   Integer   category      Category (topic) of question in Int format
+     * @param   String   question       String with the question
+     * @param   String   correct_answer String with the correct question
+     * @param   String   answer_one     String with an incorrect question
+     * @param   String   answer_two     String with an incorrect question
+     * @param   String   answer_three   String with an incorrect question
+     * @return Promise                  Return a Question object and insert it into database
      */
     static async create({category, question, correct_answer, answer_one, answer_two, answer_three, question_user_id}){
       try {
@@ -70,12 +70,13 @@ class Question {
 
     /**
      * Changes status of question (active or inactive)
-     * @param   Integer   questionId [ID of question to change stats]
-     * @return Promise            [Return modified data]
+     * @param   Integer   questionId ID of question to change stats
+     * @return Promise            Return modified data
      */
     static async changeActive(questionId) {
       try {
-        const data = await database.changeActive('questions', questionId);
+        const data = await database.update('questions',
+        `active = CASE WHEN active = 0 THEN 1 ELSE 0 END WHERE question_id = ${questionId}`);
         return data;
       } catch (e) {
         throw e;
@@ -84,14 +85,14 @@ class Question {
 
     /**
      * Changes category of specific question
-     * @param   Integer   questionId [ID of question to be modified]
-     * @param   Integer   category   [New category for question]
-     * @return Promise            [return data modified]
+     * @param   Integer   questionId  ID of question to be modified
+     * @param   Integer   category    New category for question
+     * @return Promise                return data modified
      */
     static async changeCategory(questionId, category) {
       try {
-        const data = await database.changeCategory('questions', questionId, category);
-        const question = await database.singleSelect('questions', questionId);
+        const data = await database.update('questions', `category = ${category} WHERE question_id = ${questionId}`);
+        const question = await database.select('*', 'questions', `WHERE question_id = ${questionId}`);
         if (question[0].active){
           return data;
         }
@@ -103,18 +104,25 @@ class Question {
 
     /**
      * Modifies every part of a question and update it in datbase
-     * @param   Integer   questionId     [ID of question to be modified]
-     * @param   Integer   category       [new category for question]
-     * @param   String   question       [new category for question]
-     * @param   String   correct_answer [new data for correct_answer]
-     * @param   String   answer_one     [new data for answer_one]
-     * @param   String   answer_two     [new data for answer_two]
-     * @param   String   answer_three   [new data for answer_three]
-     * @return Promise                [return modified object]
+     * @param   Integer   questionId     ID of question to be modified
+     * @param   Integer   category       new category for question
+     * @param   String   question       new category for question
+     * @param   String   correct_answer new data for correct_answer
+     * @param   String   answer_one     new data for answer_one
+     * @param   String   answer_two     new data for answer_two
+     * @param   String   answer_three   new data for answer_three
+     * @return Promise                  return modified object
      */
     static async modify(questionId, {category, question, correct_answer, answer_one, answer_two, answer_three}) {
       try {
-        const data = await database.update('questions', questionId, {category, question, correct_answer, answer_one, answer_two, answer_three} );
+        const data = await database.update('questions',
+        `category = '${category}',
+         question = '${question}',
+         correct_answer = '${correct_answer}',
+         answer_one = '${answer_one}',
+         answer_two = '${answer_two}',
+         answer_three = '${answer_three}'
+         WHERE question_id = ${questionId}`);
         return data;
       } catch (e) {
         throw e;
