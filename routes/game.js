@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { gameCtrl } = require('../Controllers');
+const { gameCtrl } = require('../controllers');
 const { auth } = require('../middlewares');
 const middleware = require('../middlewares');
 

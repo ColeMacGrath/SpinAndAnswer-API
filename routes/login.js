@@ -2,7 +2,7 @@ const { Router } = require('express');
 
 const router = Router();
 const loginMiddleWare = require('../middlewares');
-const { usersCtrl } = require('../Controllers');
+const { usersCtrl } = require('../controllers');
 
 router.get('/logout', usersCtrl.logout);
 
