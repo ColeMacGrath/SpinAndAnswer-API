@@ -155,9 +155,9 @@ class Game {
      * @param   Integer   gameId  ID of game to determine turn
      * @return  Promise           return a turn in number
      */
-    static async getTurn(gameId) {
+    static async getTurn(gameId, userId) {
       try {
-        var turn = await database.select('turn', 'game', `WHERE game_id = ${gameId}`);
+        var turn = await database.select('turn', 'game', `WHERE game_id = ${gameId} AND game_user_id = ${userId}`);
         turn = Object.values(turn[0]);
         return turn[0];
       } catch (e) {
@@ -170,9 +170,9 @@ class Game {
      * @param   Integer   gameId  ID of game for add a turn
      * @return  Promise           return a modified table info
      */
-    static async sumTurn(gameId) {
+    static async sumTurn(gameId, userId) {
       try {
-        let turn = await database.update('game', `turn = turn + 1 WHERE game_id = ${gameId}`);
+        let turn = await database.update('game', `turn = turn + 1 WHERE game_id = ${gameId} AND game_user_id = ${userId}`);
       } catch (e) {
         throw e;
       }
@@ -246,6 +246,23 @@ class Game {
         throw e;
       }
     }
+
+    static async isActive(gameId) {
+      try {
+        var active = false;
+        const game = await this.get(gameId);
+        const gameDate = new Date(game[0].game_date);
+        gameDate.setDate(gameDate.getDate() + process.env.GAME_EXPIRES);
+        const actualDate = new Date();
+        if (gameDate > actualDate) {
+          active = true;
+        }
+        return active;
+      } catch (e) {
+        throw e;
+      }
+    }
+
 }
 
 module.exports = Game;

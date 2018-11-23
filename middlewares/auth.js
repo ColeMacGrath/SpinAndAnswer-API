@@ -14,7 +14,7 @@ class Auth {
         const token = await Token.get(user.id[0].user_id, 's', 1);
         if (!token) {
           let hash = bcrypt.hashSync(String(user.id[0].user_id));
-          Token.create(user.id[0].user_id, 's', process.env.SESSSION_EXPIRES, hash);
+          Token.create(user.id[0].user_id, 's', 168, hash);
           res.json({token: hash});
         } else {
           res.json({token: token.id[0].token});
@@ -36,7 +36,7 @@ class Auth {
   static async register(req, res, next) {
       const user = await User.getBy(req.body.mail);
       let hash = bcrypt.hashSync(String(user.id[0].user_id));
-      await Token.create(user.id[0].user_id, 's', process.env.SESSSION_EXPIRES, hash);
+      await Token.create(user.id[0].user_id, 's', 168, hash);
       res.json({token: hash});
   }
 

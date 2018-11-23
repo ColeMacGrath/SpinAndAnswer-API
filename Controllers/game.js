@@ -1,5 +1,7 @@
-const { Game } = require('../models');
 var express = require('express');
+const { Game } = require('../models');
+const { Token } = require('../models');
+const { auth } = require('../middlewares');
 var router = express.Router();
 
 class GameCtrl {
@@ -120,31 +122,29 @@ class GameCtrl {
       //Determine if question is correct
       let question = await Game.getAnswer(req.body.questionId, req.body.answer);
       //Get the object of user who's playing
-      let userId = await Game.getIdOf('game_user_id', gameId);
-      //Get the object of user who's playing against
-      let rivalId = await Game.getIdOf('rival_id', gameId);
       //Get the actual turn in database
-      var turn = await Game.getTurn(gameId);
+      const header = auth.getHeaderToken(req.headers.authorization);
+      const token = await Token.getTokenBy(header);
+      const userId = token.id[0].user_id;
+      var turn = await Game.getTurn(gameId, userId);
       //Every game is supposed to be of ten turns
-      if (turn < process.env.NUMBER_OF_QUESTIONS) {
+      if (await Game.isActive(gameId) !== false) {
+        if (turn < process.env.NUMBER_OF_QUESTIONS) {
           //Check if answer is correct
-        if (question) {
-          //If turn is par firstUser answered
-          if ( turn % 2 == 0) {
+          if (question) {
             Game.updatePoints(gameId, userId, process.env.POINTS);
-            //If is odd rival answered
-          } else {
-            Game.updatePoints(gameId, rivalId, process.env.POINTS);
           }
+          //Sum a turn
+          await Game.sumTurn(gameId, userId);
+        } else {
+          //If turn is more than ten turns redirects to results screen
+          res.redirect(`results/${gameId}`);
         }
-        //Sum a turn
-        await Game.sumTurn(gameId);
+        //Return to game and show other question
+        res.redirect(`${gameId}`);
       } else {
-        //If turn is more than ten turns redirects to results screen
         res.redirect(`results/${gameId}`);
       }
-      //Return to game and show other question
-      res.redirect(`${gameId}`);
     }
 
     /**
