@@ -90,6 +90,8 @@ router.patch('/reset/:tokenId', (req, res, next) => {
 
 router.get('/:userId/friendshipRequest', [auth.haveSession, auth.canCheck], usersCtrl.friendshipRequest);
 
+router.get('/token/id', [auth.haveSession, auth.canCheck], usersCtrl.getIdByToken);
+
 router.post('/upload', upload.single('picture'), (req, res, next) => {
   console.log(req.body);
   console.log(req.file);

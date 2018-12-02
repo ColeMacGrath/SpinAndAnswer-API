@@ -55,9 +55,9 @@ class QuestionCtrl {
     async create(req, res, next) {
       let data = await Question.create(req.body);
       if (data){
-        res.status(201).send('Question created');
+        res.status(201).send(data);
       }
-      res.status(400).send('Question not created')
+      res.status(400).send('Question not created');
     }
 
     /**
@@ -99,7 +99,7 @@ class QuestionCtrl {
         if (data.affectedRows === 0) {
           res.status(404).send('Could not modify question');
         }
-        res.status(200).send('Question modified');
+        res.status(200).send(data);
     }
 }
 
