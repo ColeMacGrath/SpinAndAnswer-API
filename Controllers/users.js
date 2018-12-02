@@ -16,6 +16,7 @@ class UserCtrl {
         this.addFriend = this.addFriend.bind(this);
         this.modifyFriendship = this.modifyFriendship.bind(this);
         this.acceptFriend = this.acceptFriend.bind(this);
+        this.getIdByToken = this.getIdByToken.bind(this);
     }
 
     async getAll(req, res) {
@@ -82,7 +83,7 @@ class UserCtrl {
         let user = await User.get(token.id[0].user_id);
         if (data.affectedRows) {
           UserCtrl.sendMail('SpinAndAnswer Security Alert', user.id[0].mail, 'Your information has been updated');
-          res.status(200).send('User modified');
+          res.status(200).send(data);
         } else {
           res.status(404).send('Could not modify user');
         }
@@ -196,6 +197,15 @@ class UserCtrl {
         res.status(200).send('Message sent');
       } else {
         res.status(500).send('User not found');
+      }
+    }
+
+    async getIdByToken(req, res, next) {
+      let token = await auth.getToken(req);
+      if (token) {
+        res.status(200).send(String(token.id[0].user_id));
+      } else {
+        res.status(404).send('Invalid Session');
       }
     }
 

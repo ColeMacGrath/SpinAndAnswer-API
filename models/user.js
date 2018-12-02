@@ -169,7 +169,7 @@ class User {
         var users = [];
         var response = [];
         for (const id of friendsId) {
-          users.push(await database.select('*', 'users', `WHERE user_id = ${id.friend_user_id}`));
+          users.push(await database.select('*', 'users', `WHERE user_id = ${id.friend_id}`));
         }
 
         users.forEach((u) => {
@@ -202,11 +202,17 @@ class User {
 
     static async getFriendshipRequest(userId) {
       try {
-        const data = await database.select('*', 'friends', `WHERE friend_user_id = ${userId} AND status = 0 `);
-        const response = [];
-        data.forEach((r) => {
-          response.push(new User(r));
+        const friendsId = await database.select('*', 'friends',`WHERE friend_user_id = ${userId} AND status = 0`);
+        var users = [];
+        var response = [];
+        for (const id of friendsId) {
+          users.push(await database.select('*', 'users', `WHERE user_id = ${id.friend_id}`));
+        }
+
+        users.forEach((u) => {
+          response.push(new User(u));
         });
+
         return response;
       } catch (e) {
         throw e;

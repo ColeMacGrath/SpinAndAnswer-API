@@ -10,7 +10,6 @@ class Auth {
     if (user) {
       let correctPassword = bcrypt.compareSync(req.body.password, user.id[0].password);
       if (correctPassword) {
-        const header = Auth.getHeaderToken(req.headers.authorization);
         const token = await Token.get(user.id[0].user_id, 's', 1);
         if (!token) {
           let hash = bcrypt.hashSync(String(user.id[0].user_id));
